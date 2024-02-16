@@ -8,12 +8,14 @@ import json
 import os
 from pygame import mixer
 import shutil
+import platform
 
 
 # импортируем функции из файлов
 from button import ImageButton
 from menus import menus
 from settings_video_menu import settings_video_menu
+from settings_audio_menu import settings_audio_menu
 from generate_mission import generate_mission
 
 
@@ -193,9 +195,12 @@ def settings_menu():
             if event.type == pygame.USEREVENT and event.button == video_button:
                 print("Кнопка 'Настройки видео' была нажата!")
                 fade()
-                # running = False
-
                 settings_video_menu()
+
+            if event.type == pygame.USEREVENT and event.button == audio_button:
+                print("Кнопка 'Настройки аудио' была нажата!")
+                fade()
+                settings_audio_menu()
 
             if event.type == pygame.USEREVENT and event.button == back_button:
                 fade()
@@ -368,10 +373,15 @@ def new_game():
 
 
         # Загрузка изображения  выбранной вайфу
-        image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
+        if (platform.system() == 'Linux'):
+            image =  pygame.image.load("./src/art/guest/" + random_image)
+            file_path = "./src/txt/" + random_text
+        else:
+            image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
+            file_path = "\\dreamteam\\src\\txt\\" + random_text
         # number= pygame.text.load()
 
-        file_path = "\\dreamteam\\src\\txt\\" + random_text
+
 
         # открываем файл для чтения
         file = open(file_path, "r", encoding="utf-8")
