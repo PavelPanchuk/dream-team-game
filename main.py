@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 #библиотеки
+
+
+
 import pygame
 import sys
 import json
@@ -14,7 +17,6 @@ from button import ImageButton
 from menus import menus
 from settings_video_menu import settings_video_menu
 from generate_mission import generate_mission
-
 
 # Инициализация pygame
 pygame.init()
@@ -42,6 +44,15 @@ game_background = pygame.image.load("background2.jpg")
 pygame.display.set_icon(pygame.image.load("icon.ico"))
 
 clock = pygame.time.Clock()
+
+
+
+
+# загружаем музыкальный файл
+pygame.mixer.music.load("soundtreck.mp3")
+
+# воспроизводим музыку постоянно по кругу
+pygame.mixer.music.play(1)
 
 
 # Загрузка и установка курсора можно поменять на свою картинку, но хз на какую
@@ -300,6 +311,11 @@ def new_game():
 
                             # воспроизводим музыку бесконечно с начала
                             mixer.music.play(0, 0.0)
+                            pygame.mixer.music.load("soundtreck.mp3")
+
+# воспроизводим музыку постоянно по кругу
+                            pygame.mixer.music.play(1)
+
 
 
                 print(random_number)
