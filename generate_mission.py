@@ -1,13 +1,11 @@
-
-
 import random
 import json
 import os
 
 
-
-#функция отвечающая за генерацию миссии, пока умеет выбирать слуйчайного героя, текст сюжетный к нему, и количество пицц
+# функция отвечающая за генерацию миссии, пока умеет выбирать слуйчайного героя, текст сюжетный к нему, и количество ингридиентов для пиццы
 def generate_mission():
+    print("generate_mission")
     # определяем папку, где хранятся картинки
     image_folder = "\\dreamteam\\src\\art\\guest"
 
@@ -17,8 +15,10 @@ def generate_mission():
     # выбираем случайный файл(файфу) из списка
     random_image = random.choice(image_files)
 
-    # выбираем случайное число(пицц) от 1 до 4
-    random_number = random.randint(1, 4)
+    # выбираем случайное число(сыра) от 1 до 4
+    random_cheese = random.randint(0, 4)
+    random_tomat = random.randint(0, 4)
+    random_dough = random.randint(1, 2)
 
     # определяем папку, где хранятся текстовые файлы с историей
     text_folder = "\\dreamteam\\src\\txt"
@@ -30,25 +30,49 @@ def generate_mission():
     random_text = random.choice(text_files)
 
     print(random_image)
-    print(random_number)
+    print(random_cheese)
     print(random_text)
-    file = open('mission.json', 'w+')
+    file = open("mission.json", "w+")
 
-                # записываем текст в файл
-    file.write('{"image":"'+ str(random_image)+'", "number":'+str(random_number)+',"text":"'+str(random_text)+'"}')
+    # записываем текст в файл
+    file.write(
+        '{"image":"'
+        + str(random_image)
+        + '", "random_cheese":'
+        + str(random_cheese)
+        + ', "text":"'
+        + str(random_text)
+        + '", "random_tomat":'
+        + str(random_tomat)
+        + ', "random_dough":'
+        + str(random_dough)
+        + "}"
+    )
 
-                # закрываем файл
+    # закрываем файл
     file.close()
 
-    #в random_number хранится количество пицц, это техническая инфа
-    file = open('mission_teh.txt', 'w+')
 
-                # записываем текст в файл
-    file.write(str(random_number))
-
-                # закрываем файл
+    x=0
+    file = open("cheese.txt", "w+")
+    # записываем текст в файл
+    file.write(str(x))
+    # закрываем файл
     file.close()
-    
+
+
+    # в random_number хранится количество пицц, это техническая инфа
+    file = open("tomat.txt", "w+")
+    # записываем текст в файл
+    file.write(str(x))
+    # закрываем файл
+    file.close()        # в random_number хранится количество пицц, это техническая инфа
+
+    file = open("dough.txt", "w+")
+    # записываем текст в файл
+    file.write(str(x))
+    # закрываем файл
+    file.close()
 
 
 
