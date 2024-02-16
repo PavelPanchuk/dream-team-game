@@ -5,6 +5,7 @@ import os
 
 # функция отвечающая за генерацию миссии, пока умеет выбирать слуйчайного героя, текст сюжетный к нему, и количество ингридиентов для пиццы
 def generate_mission():
+    print("generate_mission")
     # определяем папку, где хранятся картинки
     image_folder = "\\dreamteam\\src\\art\\guest"
 
@@ -51,11 +52,33 @@ def generate_mission():
     # закрываем файл
     file.close()
 
-    # в random_number хранится количество пицц, это техническая инфа
-    file = open("mission_teh.txt", "w+")
 
+    x=0
+    file = open("cheese.txt", "w+")
     # записываем текст в файл
-    file.write(str(random_cheese))
-
+    file.write(str(x))
     # закрываем файл
     file.close()
+
+
+    # в random_number хранится количество пицц, это техническая инфа
+    file = open("tomat.txt", "w+")
+    # записываем текст в файл
+    file.write(str(x))
+    # закрываем файл
+    file.close()        # в random_number хранится количество пицц, это техническая инфа
+
+    file = open("dough.txt", "w+")
+    # записываем текст в файл
+    file.write(str(x))
+    # закрываем файл
+    file.close()
+
+
+
+
+
+
+
+
+

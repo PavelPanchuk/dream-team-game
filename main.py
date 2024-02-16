@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # библиотеки
 
-
+import random
 import pygame
 import sys
 import json
@@ -261,142 +261,93 @@ def new_game():
         num = int(file.read())
         # закрываем файл
         file.close()
+        # проверяем существование файла
+        file_path = "day.txt"
 
+                    # задаем другую переменную для сложения
+
+                    # открываем файл для чтения
+        file = open(file_path, "r")
+
+                    # читаем число из файла и преобразуем его в целое
+        day = int(file.read())
+
+        file.close()
 
         font = pygame.font.Font(None, 72)
-        text_surface = font.render("$" + str(num), True, (0, 255, 255), (255, 204, 153))
+        text_surface = font.render("$" + str(num)+" day "+str(day), True, (0, 255, 255), (255, 204, 153))
         text_rect = text_surface.get_rect(center=(WIDTH / 10, HEIGHT / 20 + 100))
         screen.blit(text_surface, text_rect)
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
 
-            if event.type == pygame.KEYDOWN:
-                # Возврат в меню
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-            # Возврат в меню
-            if event.type == pygame.USEREVENT and event.button == back_button:
-                running = False
-            # вызывается файл с функцией меню
-            if event.type == pygame.USEREVENT and event.button == menus_button:
-                fade()
-                menus()
-            # хрень при нажатие на которую можно отдать заказ, сравнивает миссию и что получилось
-            if event.type == pygame.USEREVENT and event.button == put_button:
-                # задаем путь к папке
-                folder_path11 = "//dreamteam//src//mission//pizza//"
-
-                # получаем список всех файлов и подпапок в папке
-                files_and_folders = os.listdir(folder_path11)
-
-                # создаем счетчик для файлов
-                file_count = 0
-
-                # перебираем все элементы списка
-                for item in files_and_folders:
-                    # получаем полный путь к элементу
-                    item_path = os.path.join(folder_path11, item)
-                    # проверяем, является ли элемент файлом
-                    if os.path.isfile(item_path):
-                        # увеличиваем счетчик на единицу
-                        file_count += 1
-
-                # выводим количество файлов на экран
-                print(f"В папке {folder_path11} находится {file_count} файлов.")
-                if str(file_count) >= str(random_cheese):
-                    print(f"1 k 1 можно отдать заказ")
-
-                    file_path = "money.txt"
-
-                    # задаем другую переменную для сложения
-                    other_var = int(random_cheese) * 200
-
-                    # открываем файл для чтения
-                    file = open(file_path, "r")
-
-                    # читаем число из файла и преобразуем его в целое
-                    num = int(file.read())
-
-                    # закрываем файл
-                    file.close()
-
-                    # нынешняя сумма + доходы-расходы фактические (тут можно отдать больше товаров чем просят, и это не оплачивается)
-                    result = int(num) + int(other_var) - int(file_count) * 150
-                    print(result)
-                    print(num)
-                    print(other_var)
-
-                    # открываем файл для записи
-                    file = open(file_path, "w")
-
-                    # записываем результат в файл, преобразовав его в строку
-                    file.write(str(result))
-
-                    # закрываем файл
-                    file.close()
-
-                    # задаем путь к файлу
-                    file_path = "mission.json"
-
-                    # удаляем файл
-                    os.remove(file_path)
-
-                    # задаем путь к директории
-                    dir_path = "\\dreamteam\\src\\mission\\pizza\\"
-
-                    # удаляем директорию и все ее содержимое
-                    shutil.rmtree(dir_path)
-                    # задаем путь к директории
-                    dir_path = "\\dreamteam\\src\\mission\\pizza"
-
-                    # создаем директорию
-                    os.mkdir(dir_path)
-
-                else:
-                    font = pygame.font.Font(None, 72)
-                    text_surface = font.render(
-                        "ТУТ НЕ ВЕСЬ ЗАКАЗ", True, (0, 0, 0), (255, 204, 153)
-                    )
-                    text_rect = text_surface.get_rect(
-                        center=(WIDTH / 10 + 100, HEIGHT / 20 + 300)
-                    )
-                    screen.blit(text_surface, text_rect)
-                    mixer.init()
-
-                    # загружаем файл с музыкой
-                    mixer.music.load("error.mp3")
-
-                    # воспроизводим музыку бесконечно с начала
-                    mixer.music.play(0, 0.0)
-                    pygame.mixer.music.load("soundtreck.mp3")
-
-                    # воспроизводим музыку постоянно по кругу
-                    pygame.mixer.music.play(1)
-
-                print(random_cheese)
-
-            # cюда вставлять кнопочки для отрисовочки очка
-            for btn in [back_button, menus_button, put_button]:
-                btn.handle_event(event)
-        # cюда вставлять кнопочки для отрисовочки очка
-        for btn in [back_button, menus_button, put_button]:
-            btn.check_hover(pygame.mouse.get_pos())
-            btn.draw(screen)
 
         # тут должно быть что то что генерировало случайного перса и текст с заданием
         file_path = "mission.json"
 
         # проверяем существование файла
-        if os.path.exists(file_path) and os.path.isfile(file_path):
-            pass
-        else:
-            print("Файл не существует")
+        if (os.path.exists(file_path) and os.path.isfile(file_path))==False:
+            
+            print("Файл не существует2")
             generate_mission()
+
+            file_path = "hours.txt"
+
+                    # задаем другую переменную для сложения
+            other_var = random.randint(1, 5)
+
+                    # открываем файл для чтения
+            file = open(file_path, "r")
+
+                    # читаем число из файла и преобразуем его в целое
+            num = int(file.read())
+
+                    # закрываем файл
+            file.close()
+
+                    # нынешняя сумма + доходы-расходы фактические (тут можно отдать больше товаров чем просят, и это не оплачивается)
+            result = int(num) + int(other_var) 
+            print(result)
+            print(num)
+            print(other_var)
+            if result>=24:
+                result=0
+                file_path1 = "day.txt"
+
+                        # задаем другую переменную для сложения
+                        # открываем файл для чтения
+                file1 = open(file_path1, "r")
+
+                        # читаем число из файла и преобразуем его в целое
+                daynow = int(file1.read())
+
+                        # закрываем файл
+                file1.close()
+
+                        # открываем файл для записи
+                file1 = open(file_path1, "w")
+                z=daynow+1
+                print("z")
+                print(z)
+                        # записываем результат в файл, преобразовав его в строку
+                file1.write(str(z))
+
+                        # закрываем файл
+                file1.close()
+
+
+
+                    # открываем файл для записи
+            file = open(file_path, "w")
+
+                    # записываем результат в файл, преобразовав его в строку
+            file.write(str(result))
+
+                    # закрываем файл
+            file.close()
+
+
+
+
 
 
         #получение инфы о миссии
@@ -455,6 +406,158 @@ def new_game():
         # Отображение курсора в текущей позиции мыши
         x, y = pygame.mouse.get_pos()
         # screen.blit(cursor, (x-2, y-2))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+
+            if event.type == pygame.KEYDOWN:
+                # Возврат в меню
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+
+            # Возврат в меню
+            if event.type == pygame.USEREVENT and event.button == back_button:
+                running = False
+            # вызывается файл с функцией меню
+            if event.type == pygame.USEREVENT and event.button == menus_button:
+                fade()
+                menus()
+            # хрень при нажатие на которую можно отдать заказ, сравнивает миссию и что получилось
+            if event.type == pygame.USEREVENT and event.button == put_button:
+                # задаем путь к папке
+                #получение инфы о миссии
+                file = open("mission.json", "r")
+                data = json.loads(file.read())
+                random_cheese = data["random_cheese"]
+                random_cheese = int(random_cheese)
+                random_tomat = data["random_tomat"]
+                random_tomat = int(random_tomat)
+                random_dough = data["random_dough"]
+                random_dough = int(random_dough)
+                file.close()
+
+
+                file_path = "cheese.txt"
+                file = open(file_path, "r")
+                need_cheese = int(file.read())
+                file.close()
+                file_path = "tomat.txt"
+                file = open(file_path, "r")
+                need_tomat = int(file.read())
+                file.close()
+                file_path = "dough.txt"
+                file = open(file_path, "r")
+                need_dough = int(file.read())
+                file.close()
+
+
+
+
+
+
+                print(random_cheese)                
+                print(need_cheese)               
+                print(random_tomat)               
+                print(need_tomat)                
+                print(random_dough)
+                print(need_dough)
+
+
+                if str(random_cheese)<=str(need_cheese) and str(random_tomat)<=str(need_tomat) and str(random_dough)<=str(need_dough):
+                    print(f"1 k 1 можно отдать заказ")
+
+                    file_path = "money.txt"
+
+                    # задаем другую переменную для сложения
+                    other_var = int(random_cheese) * 200
+
+                    # открываем файл для чтения
+                    file = open(file_path, "r")
+
+                    # читаем число из файла и преобразуем его в целое
+                    num = int(file.read())
+
+                    # закрываем файл
+                    file.close()
+
+                    # нынешняя сумма + доходы-расходы фактические (тут можно отдать больше товаров чем просят, и это не оплачивается)
+                    result = int(num) + int(other_var) - 150
+                    print(result)
+                    print(num)
+                    print(other_var)
+
+                    # открываем файл для записи
+                    file = open(file_path, "w")
+
+                    # записываем результат в файл, преобразовав его в строку
+                    file.write(str(result))
+
+                    # закрываем файл
+                    file.close()
+
+                    # задаем путь к файлу
+                    file_path = "mission.json"
+                    # удаляем файл
+                    os.remove(file_path)
+
+                    # задаем путь к директории
+                    dir_path = "\\dreamteam\\src\\mission\\pizza\\"
+
+                    # удаляем директорию и все ее содержимое
+                    shutil.rmtree(dir_path)
+                    # задаем путь к директории
+                    dir_path = "\\dreamteam\\src\\mission\\pizza"
+
+                    # создаем директорию
+                    os.mkdir(dir_path)
+
+
+                    file_path = "tomat.txt"
+
+                    # удаляем файл
+                    os.remove(file_path)
+                    file_path = "cheese.txt"
+
+                    # удаляем файл
+                    os.remove(file_path)
+
+                    file_path = "dough.txt"
+                    # удаляем файл
+                    os.remove(file_path)
+
+
+                else:
+                    font = pygame.font.Font(None, 72)
+                    text_surface = font.render(
+                        "ТУТ НЕ ВЕСЬ ЗАКАЗ", True, (0, 0, 0), (255, 204, 153)
+                    )
+                    text_rect = text_surface.get_rect(
+                        center=(WIDTH / 10 + 100, HEIGHT / 20 + 300)
+                    )
+                    screen.blit(text_surface, text_rect)
+                    mixer.init()
+
+                    # загружаем файл с музыкой
+                    mixer.music.load("error.mp3")
+
+                    # воспроизводим музыку бесконечно с начала
+                    mixer.music.play(0, 0.0)
+                    pygame.mixer.music.load("soundtreck.mp3")
+
+                    # воспроизводим музыку постоянно по кругу
+                    pygame.mixer.music.play(1)
+
+                print(random_cheese)
+
+            # cюда вставлять кнопочки для отрисовочки очка
+            for btn in [back_button, menus_button, put_button]:
+                btn.handle_event(event)
+        # cюда вставлять кнопочки для отрисовочки очка
+        for btn in [back_button, menus_button, put_button]:
+            btn.check_hover(pygame.mouse.get_pos())
+            btn.draw(screen)
 
         pygame.display.flip()
 

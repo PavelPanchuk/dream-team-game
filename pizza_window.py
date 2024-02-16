@@ -3,7 +3,7 @@ import sys
 from button import ImageButton
 import pygame_menu
 import json
-
+import os
 import datetime
 
 
@@ -18,7 +18,7 @@ data = json.loads(file.read())
     # получаем значение по ключу 'WIDTH' и присваиваем его переменной x
 WIDTH = data['WIDTH']
 HEIGHT= data['HEIGHT']
-MAX_FPS= data['HEIGHT']
+MAX_FPS= 60
     # закрываем файл
 file.close()
     # выводим значение переменной x
@@ -71,7 +71,7 @@ def pizza_window():
     print("pizza cookie def")
     # Создание кнопок
     spice_button = ImageButton(WIDTH/2-200, 350, 100, 74, "приготовить", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    pizza_button = ImageButton(WIDTH/2-200, 450, 100, 74, "сыр", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    pizza_button = ImageButton(WIDTH/2-200, 450, 100, 74, "", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
     back_button = ImageButton(WIDTH/2-200, 550, 100, 74, "к заказу", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
 
 
@@ -131,6 +131,40 @@ def pizza_window():
         pizza_surface.blit(dough_image, (mouse_x-300, mouse_y-150))
         # обновляем экран
 
+        file_path = "dough.txt"
+        file = open(file_path, "r")
+        num = int(file.read())
+        file.close()
+        x=1
+        result = int(num) + int(x)
+        print(result)
+        print(num)
+
+        file_path = "dough.txt"
+        os.remove(file_path)
+
+        file = open(file_path, "w+")
+        file.write(str(result))
+        file.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         pygame.display.flip()
 
     # создаем функцию для рисования сыра
@@ -141,6 +175,24 @@ def pizza_window():
         # накладываем изображение сыра на поверхность пиццы с учетом смещения
         pizza_surface.blit(cheese_image, (mouse_x-300, mouse_y-150))
         # обновляем экран
+
+
+
+        file_path = "cheese.txt"
+        file = open(file_path, "r")
+        num = int(file.read())
+        file.close()
+        x=1
+        result = int(num) + int(x)
+        print(result)
+        print(num)
+
+        file_path = "cheese.txt"
+        os.remove(file_path)
+
+        file = open(file_path, "w+")
+        file.write(str(result))
+        file.close()
         pygame.display.flip()
 
     def draw_tomat():
@@ -150,6 +202,24 @@ def pizza_window():
         # накладываем изображение сыра на поверхность пиццы с учетом смещения
         pizza_surface.blit(tomat_image, (mouse_x-300, mouse_y-150))
         # обновляем экран
+        
+
+        file_path = "tomat.txt"
+        file = open(file_path, "r")
+        num = int(file.read())
+        file.close()
+        x=1
+        result = int(num) + int(x)
+        print(result)
+        print(num)
+
+        file_path = "tomat.txt"
+        os.remove(file_path)
+
+        file = open(file_path, "w+")
+        file.write(str(result))
+        file.close()
+
         pygame.display.flip()    
 
 
