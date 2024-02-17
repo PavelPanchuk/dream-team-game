@@ -9,23 +9,29 @@ import json
 # Инициализация pygame
 pygame.init()
 
-# Параметры экрана
+def read_size():
+    file = open("settings.json", "r")
+    data = json.loads(file.read())
 
-WIDTH=960
-HEIGHT=600
+    # Параметры экрана
+
+    width = data["WIDTH"]
+    height = data["HEIGHT"]
+    file.close()
+    return width, height
+
+WIDTH, HEIGHT = read_size()
 
 MAX_FPS = 60
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu test")
 main_background = pygame.image.load("background1.jpg")
+main_background = pygame.transform.scale(main_background, (WIDTH, HEIGHT))
 game_background = pygame.image.load("background2.jpg")
+game_background = pygame.transform.scale(game_background, (WIDTH, HEIGHT))
 
 clock = pygame.time.Clock()
-
-
-
-
 
 # Загрузка и установка курсора можно поменять на свою картинку, но хз на какую
 cursor = pygame.image.load("cursor.png") 
@@ -34,7 +40,8 @@ pygame.mouse.set_visible(True)  # Скрываем стандартный кур
 def fade():
     running = True
     fade_alpha = 0  # Уровень прозрачности для анимации
-
+    WIDTH, HEIGHT = read_size()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -57,13 +64,12 @@ def fade():
 
 def settings_video_menu():
     print("video settings")
-        # Создание кнопок
-    low_button = ImageButton(WIDTH/2-(252/2), 150, 252, 74, "960x600", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    back_button = ImageButton(WIDTH/2-(252/2), 250, 252, 74, "Назад", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    full_button = ImageButton(WIDTH/2-(252/2), 350, 252, 74, "1280x640", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    hd_button = ImageButton(WIDTH/2-(252/2), 450, 252, 74, "1920x1080", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
 
-   
+    # Создание кнопок
+    low_button = ImageButton(WIDTH/2-(252/2), HEIGHT / 2 - 148, 252, 74, "960x600", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    full_button = ImageButton(WIDTH/2-(252/2), HEIGHT / 2 -48, 252, 74, "1280x640", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    hd_button = ImageButton(WIDTH/2-(252/2), HEIGHT / 2 + 52, 252, 74, "1920x1080", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    back_button = ImageButton(WIDTH/2-(252/2), HEIGHT / 2 + 152, 252, 74, "Назад", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
 
     running = True
     while running:
@@ -91,7 +97,7 @@ def settings_video_menu():
                 file = open('settings.json', 'w+')
 
                 # записываем текст в файл
-                file.write('{"WIDTH": 1980, "HEIGHT": 1080,"MAX_FPS":60}')
+                file.write('{"WIDTH": 1920, "HEIGHT": 1080,"MAX_FPS":60}')
 
                 # закрываем файл
                 file.close()

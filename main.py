@@ -24,23 +24,27 @@ pygame.init()
 
 # хрень в которой считываем из файла разрешение экрана
 
-file = open("settings.json", "r")
-data = json.loads(file.read())
-WIDTH = data["WIDTH"]
-HEIGHT = data["HEIGHT"]
-file.close()
-print(WIDTH)
-print(HEIGHT)
+def read_size():
+    file = open("settings.json", "r")
+    data = json.loads(file.read())
 
+    # Параметры экрана
 
-# Параметры экрана
-# WIDTH, HEIGHT = 960, 600
+    width = data["WIDTH"]
+    height = data["HEIGHT"]
+    file.close()
+    return width, height
+
+WIDTH, HEIGHT = read_size()
+
 MAX_FPS = 30
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("котокафе")
 main_background = pygame.image.load("background1.jpg")
+main_background = pygame.transform.scale(main_background, (WIDTH, HEIGHT))
 game_background = pygame.image.load("background2.jpg")
+game_background = pygame.transform.scale(game_background, (WIDTH, HEIGHT))
 pygame.display.set_icon(pygame.image.load("icon.ico"))
 
 clock = pygame.time.Clock()
@@ -57,10 +61,11 @@ pygame.mouse.set_visible(True)  # Скрываем стандартный кур
 
 # главное меню и функция
 def main_menu():
+    WIDTH, HEIGHT = read_size()
     # Создание кнопок
     start_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        150,
+        HEIGHT / 2 - 148,
         252,
         74,
         "Играть",
@@ -70,7 +75,7 @@ def main_menu():
     )
     settings_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        250,
+        HEIGHT / 2 - 48,
         252,
         74,
         "Настройки",
@@ -80,7 +85,7 @@ def main_menu():
     )
     exit_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        350,
+        HEIGHT / 2 + 52,
         252,
         74,
         "Выйти",
@@ -92,7 +97,9 @@ def main_menu():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(main_background, (0, -300))
+
+
+        screen.blit(main_background, (0, 0))
 
         font = pygame.font.Font(None, 72)
         text_surface = font.render("MENU TEST", True, (255, 255, 255))
@@ -138,10 +145,11 @@ def main_menu():
 
 # функция настроек
 def settings_menu():
+    WIDTH, HEIGHT = read_size()
     # Создание кнопок
     audio_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        150,
+        HEIGHT / 2 - 148,
         252,
         74,
         "Аудио",
@@ -151,7 +159,7 @@ def settings_menu():
     )
     video_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        250,
+        HEIGHT / 2 - 48,
         252,
         74,
         "Видео",
@@ -161,7 +169,7 @@ def settings_menu():
     )
     back_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        350,
+        HEIGHT / 2 + 52,
         252,
         74,
         "Назад",
@@ -222,6 +230,7 @@ def settings_menu():
 
 # функция для запуска самой игры(геймплея)
 def new_game():
+    WIDTH, HEIGHT = read_size()
     # Создание кнопок
     back_button = ImageButton(
         WIDTH - 1000,
@@ -258,7 +267,7 @@ def new_game():
     while running:
 
         screen.fill((0, 0, 0))
-        screen.blit(game_background, (0, -400))
+        screen.blit(game_background, (0, 0))
 
         file_path = "money.txt"
         file = open(file_path, "r")
@@ -576,7 +585,8 @@ def new_game():
 def fade():
     running = True
     fade_alpha = 0  # Уровень прозрачности для анимации
-
+    WIDTH, HEIGHT = read_size()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
