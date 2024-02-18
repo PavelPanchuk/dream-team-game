@@ -9,30 +9,23 @@ import json
 # Инициализация pygame
 pygame.init()
 
-def read_size():
-    file = open("settings.json", "r")
-    data = json.loads(file.read())
+# Параметры экрана
 
-    # Параметры экрана
-
-    width = data["WIDTH"]
-    height = data["HEIGHT"]
-    file.close()
-    return width, height
-
-WIDTH, HEIGHT = read_size()
+WIDTH=960
+HEIGHT=600
 
 MAX_FPS = 60
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu test")
 main_background = pygame.image.load("background1.jpg")
-main_background = pygame.transform.scale(main_background, (WIDTH, HEIGHT))
-
 game_background = pygame.image.load("background2.jpg")
-game_background = pygame.transform.scale(game_background, (WIDTH, HEIGHT))
 
 clock = pygame.time.Clock()
+
+
+
+
 
 # Загрузка и установка курсора можно поменять на свою картинку, но хз на какую
 cursor = pygame.image.load("cursor.png") 
@@ -63,17 +56,11 @@ def fade():
         clock.tick(MAX_FPS)  # Ограничение FPS
 
 def settings_audio_menu():
-    print("audio settings")
-
-    # Проверка работает ли музыка
-    if pygame.mixer.music.get_busy():
-        text_music = "Отключить музыку"
-    else:
-        text_music = "Включить музыку"
-
+    print("video settings")
         # Создание кнопок
-    on_button = ImageButton(WIDTH/2-(252/2), HEIGHT / 2 - 74, 252, 74, text_music, "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    back_button = ImageButton(WIDTH/2-(252/2), HEIGHT / 2 + 26 , 252, 74, "Назад", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    on_button = ImageButton(WIDTH/2-(252/2), 150, 252, 74, "Отключить музыку", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    back_button = ImageButton(WIDTH/2-(252/2), 250, 252, 74, "Назад", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+   
 
     running = True
     while running:
