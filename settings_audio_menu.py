@@ -9,23 +9,32 @@ import json
 # Инициализация pygame
 pygame.init()
 
-# Параметры экрана
+def read_size():
+    file = open("settings.json", "r")
+    data = json.loads(file.read())
 
-WIDTH=960
-HEIGHT=600
+    # Параметры экрана
+
+    width = data["WIDTH"]
+    height = data["HEIGHT"]
+    file.close()
+    return width, height
+
+def resize_background(filename, width, height):
+    background = pygame.image.load(filename)
+    background = pygame.transform.scale(background, (width, height))
+    return background
+
+WIDTH, HEIGHT = read_size()
 
 MAX_FPS = 60
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Menu test")
-main_background = pygame.image.load("background1.jpg")
-game_background = pygame.image.load("background2.jpg")
+pygame.display.set_caption("audio settings")
+main_background = resize_background("background1.jpg", WIDTH, HEIGHT)
+
 
 clock = pygame.time.Clock()
-
-
-
-
 
 # Загрузка и установка курсора можно поменять на свою картинку, но хз на какую
 cursor = pygame.image.load("cursor.png") 
@@ -56,16 +65,24 @@ def fade():
         clock.tick(MAX_FPS)  # Ограничение FPS
 
 def settings_audio_menu():
-    print("video settings")
+    print("audio settings")
+    WIDTH, HEIGHT = read_size()
+    # Проверка работает ли музыка
+    if pygame.mixer.music.get_busy():
+        text_music = "Отключить музыку"
+    else:
+        text_music = "Включить музыку"
         # Создание кнопок
-    on_button = ImageButton(WIDTH/2-(252/2), 150, 252, 74, "Отключить музыку", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    back_button = ImageButton(WIDTH/2-(252/2), 250, 252, 74, "Назад", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-   
+    on_button = ImageButton(WIDTH / 2 - (252 / 2), HEIGHT / 2 - 74, 252, 74, text_music, "green_button2.jpg",
+                            "green_button2_hover.jpg", "click.mp3")
+    back_button = ImageButton(WIDTH / 2 - (252 / 2), HEIGHT / 2 + 26, 252, 74, "Назад", "green_button2.jpg",
+                              "green_button2_hover.jpg", "click.mp3")
 
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(main_background, (0, 0))
+        background = resize_background("background1.jpg", WIDTH, HEIGHT)
+        screen.blit(background, (0, 0))
 
         font = pygame.font.Font(None, 72)
         text_surface = font.render("Изменить настройки звука", True, (255, 255, 255))
