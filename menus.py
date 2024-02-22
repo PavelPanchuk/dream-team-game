@@ -10,23 +10,31 @@ from spice_window import spice_window
 # Инициализация pygame
 pygame.init()
 
-file = open("settings.json", "r")
+def read_size():
+    file = open("settings.json", "r")
+    data = json.loads(file.read())
 
-# читаем содержимое файла и преобразуем его в словарь
-data = json.loads(file.read())
+    # Параметры экрана
 
-# получаем значение по ключу 'WIDTH' и присваиваем его переменной x
-WIDTH = data["WIDTH"]
-HEIGHT = data["HEIGHT"]
-MAX_FPS = 60
-# закрываем файл
-file.close()
+    width = data["WIDTH"]
+    height = data["HEIGHT"]
+    file.close()
+    return width, height
 
+WIDTH, HEIGHT = read_size()
+
+def resize_background(filename, width, height):
+    background = pygame.image.load(filename)
+    background = pygame.transform.scale(background, (width, height))
+    return background
+
+
+MAX_FPS = 10
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Menu test")
-main_background = pygame.image.load("background1.jpg")
-game_background = pygame.image.load("background2.jpg")
+pygame.display.set_caption("котокафе")
+main_background = resize_background("background1.jpg", WIDTH, HEIGHT)
+pygame.display.set_icon(pygame.image.load("icon.ico"))
 
 clock = pygame.time.Clock()
 
@@ -57,15 +65,16 @@ def fade():
             running = False
 
         pygame.display.flip()
-        clock.tick(MAX_FPS)  # Ограничение FPS
+        clock.tick(30)  # Ограничение FPS
 
 
 def menus():
+    WIDTH, HEIGHT = read_size()
     print("menu def")
     # Создание кнопок
     spice_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        150,
+        HEIGHT / 2 - 148,
         252,
         74,
         "Рецепты",
@@ -75,7 +84,7 @@ def menus():
     )
     pizza_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        250,
+        HEIGHT / 2 - 48,
         252,
         74,
         "к готовке пиццы",
@@ -85,7 +94,7 @@ def menus():
     )
     back_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        350,
+        HEIGHT / 2 + 52,
         252,
         74,
         "к заказу",
@@ -97,10 +106,11 @@ def menus():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(main_background, (0, 0))
+        background = resize_background("background1.jpg", WIDTH, HEIGHT)
+        screen.blit(background, (0, 0))
 
         font = pygame.font.Font(None, 72)
-        text_surface = font.render("управление кафе", True, (255, 255, 255))
+        text_surface = font.render("Управление кафе", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
         screen.blit(text_surface, text_rect)
 
@@ -121,10 +131,12 @@ def menus():
                 running = False
             if event.type == pygame.USEREVENT and event.button == spice_button:
                 fade()
+                running = False
                 spice_window()
 
             if event.type == pygame.USEREVENT and event.button == pizza_button:
                 fade()
+                running = False
                 pizza_window()
 
             for btn in [spice_button, pizza_button, back_button]:

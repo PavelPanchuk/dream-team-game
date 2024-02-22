@@ -45,7 +45,7 @@ def resize_background(filename, width, height):
 
 
 
-MAX_FPS = 30
+MAX_FPS = 10
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("котокафе")
@@ -147,6 +147,7 @@ def main_menu():
         # screen.blit(cursor, (x-2, y-2))
 
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 
 
 # функция настроек
@@ -239,9 +240,10 @@ def settings_menu():
         # screen.blit(cursor, (x-2, y-2))
 
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 
 
-# функция для запуска самой игры(геймплея)
+# функция для запуска самой игры (геймплея)
 def new_game():
     WIDTH, HEIGHT = read_size()
     # Создание кнопок
@@ -305,7 +307,7 @@ def new_game():
         file.close()
 
         font = pygame.font.Font(None, 72)
-        text_surface = font.render("$" + str(num)+" day "+str(day), True, (0, 255, 255), (255, 204, 153))
+        text_surface = font.render("$" + str(num) + " day " + str(day), True, (0, 255, 255), (255, 204, 153))
         text_rect = text_surface.get_rect(center=(WIDTH / 10, HEIGHT / 20 + 100))
         screen.blit(text_surface, text_rect)
 
@@ -317,7 +319,7 @@ def new_game():
         # проверяем существование файла
         if (os.path.exists(file_path) and os.path.isfile(file_path))==False:
             
-            print("Файл не существует2")
+            print("Файл не существует")
             generate_mission()
 
             file_path = "hours.txt"
@@ -375,11 +377,6 @@ def new_game():
                     # закрываем файл
             file.close()
 
-
-
-
-
-
         #получение инфы о миссии
         file = open("mission.json", "r")
         # читаем содержимое файла и преобразуем его в словарь
@@ -396,7 +393,6 @@ def new_game():
         random_text = data["text"]
         file.close()
 
-
         # Загрузка изображения  выбранной вайфу
         if (platform.system() == 'Linux'):
             image =  pygame.image.load("./src/art/guest/" + random_image)
@@ -405,8 +401,6 @@ def new_game():
             image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
             file_path = "\\dreamteam\\src\\txt\\" + random_text
         # number= pygame.text.load()
-
-
 
         # открываем файл для чтения
         file = open(file_path, "r", encoding="utf-8")
@@ -487,12 +481,7 @@ def new_game():
                 need_dough = int(file.read())
                 file.close()
 
-
-
-
-
-
-                print(random_cheese)                
+                print(random_cheese)
                 print(need_cheese)               
                 print(random_tomat)               
                 print(need_tomat)                
@@ -538,12 +527,19 @@ def new_game():
                     os.remove(file_path)
 
                     # задаем путь к директории
-                    dir_path = "\\dreamteam\\src\\mission\\pizza\\"
+                    if (platform.system() == 'Linux'):
+                        dir_path = "./src/mission/pizza/"
+                    else:
+                        dir_path = "\\dreamteam\\src\\mission\\pizza\\"
 
                     # удаляем директорию и все ее содержимое
                     shutil.rmtree(dir_path)
                     # задаем путь к директории
-                    dir_path = "\\dreamteam\\src\\mission\\pizza"
+                    if (platform.system() == 'Linux'):
+                        dir_path = "./src/mission/pizza"
+                    else:
+                        dir_path = "\\dreamteam\\src\\mission\\pizza"
+
 
                     # создаем директорию
                     os.mkdir(dir_path)
@@ -595,6 +591,7 @@ def new_game():
             btn.draw(screen)
 
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 
 
 # затемнение при переходе между экранами, для красоты
@@ -621,7 +618,7 @@ def fade():
             running = False
 
         pygame.display.flip()
-        clock.tick(MAX_FPS)  # Ограничение FPS
+        clock.tick(30)  # Ограничение FPS
 
 
 # бесконечный цикл?

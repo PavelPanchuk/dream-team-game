@@ -10,35 +10,41 @@ import datetime
 # Инициализация pygame
 pygame.init()
 
-file = open('settings.json', 'r')
+def read_size():
+    file = open("settings.json", "r")
+    data = json.loads(file.read())
 
-    # читаем содержимое файла и преобразуем его в словарь
-data = json.loads(file.read())
+    # Параметры экрана
 
-    # получаем значение по ключу 'WIDTH' и присваиваем его переменной x
-WIDTH = data['WIDTH']
-HEIGHT= data['HEIGHT']
-MAX_FPS= 60
-    # закрываем файл
-file.close()
-    # выводим значение переменной x
+    width = data["WIDTH"]
+    height = data["HEIGHT"]
+    file.close()
+    return width, height
+
+WIDTH, HEIGHT = read_size()
+
+def resize_background(filename, width, height):
+    background = pygame.image.load(filename)
+    background = pygame.transform.scale(background, (width, height))
+    return background
+
+MAX_FPS = 10
 
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu test")
-main_background = pygame.image.load("background1.jpg")
-game_background = pygame.image.load("background2.jpg")
+main_background = resize_background("background1.jpg", WIDTH, HEIGHT)
 
 clock = pygame.time.Clock()
 WHITE = (0, 0, 255)
 
 # Загрузка и установка курсора можно поменять на свою картинку, но хз на какую
-#cursor = pygame.image.load("cursor.png") 
+#cursor = pygame.image.load("cursor.png")
+
 sc = pygame.display.set_mode((400, 300))
-
 sc.fill(WHITE)
-pygame.display.update()
 
+pygame.display.update()
 pygame.mouse.set_visible(False)  # Скрываем стандартный курсор
 # затемнение
 def fade():
@@ -63,16 +69,17 @@ def fade():
             running = False
 
         pygame.display.flip()
-        clock.tick(MAX_FPS)  # Ограничение FPS
+        clock.tick(30)  # Ограничение FPS
 
 #функция где можно готовить пиццу
 
 def pizza_window():
+    WIDTH, HEIGHT = read_size()
+    running = False
     print("pizza cookie def")
     # Создание кнопок
-    spice_button = ImageButton(WIDTH/2-200, 350, 100, 74, "приготовить", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    pizza_button = ImageButton(WIDTH/2-200, 450, 100, 74, "", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    back_button = ImageButton(WIDTH/2-200, 550, 100, 74, "к заказу", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    spice_button = ImageButton(WIDTH-200, 100, 150, 74, "приготовить", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    back_button = ImageButton(100, 100, 150, 74, "к заказу", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
 
 
 
@@ -102,7 +109,6 @@ def pizza_window():
     buttons = pygame.sprite.Group()
     buttons.add(dough_button)
     buttons.add(cheese_button)
-
     buttons.add(tomat_button)
 
 
@@ -147,25 +153,8 @@ def pizza_window():
         file.write(str(result))
         file.close()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 
     # создаем функцию для рисования сыра
     def draw_cheese():
@@ -175,8 +164,6 @@ def pizza_window():
         # накладываем изображение сыра на поверхность пиццы с учетом смещения
         pizza_surface.blit(cheese_image, (mouse_x-300, mouse_y-150))
         # обновляем экран
-
-
 
         file_path = "cheese.txt"
         file = open(file_path, "r")
@@ -194,6 +181,7 @@ def pizza_window():
         file.write(str(result))
         file.close()
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 
     def draw_tomat():
         # получаем координаты курсора мыши
@@ -220,7 +208,8 @@ def pizza_window():
         file.write(str(result))
         file.close()
 
-        pygame.display.flip()    
+        pygame.display.flip()
+        clock.tick(MAX_FPS)
 
 
 
@@ -254,10 +243,11 @@ def pizza_window():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(main_background, (0, 0))
+        background = resize_background("background1.jpg", WIDTH, HEIGHT)
+        screen.blit(background, (0, 0))
 
         font = pygame.font.Font(None, 72)
-        text_surface = font.render("кухня", True, (0, 0, 0))
+        text_surface = font.render("Кухня", True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(WIDTH/2,100))
         screen.blit(text_surface, text_rect)
 
@@ -279,10 +269,7 @@ def pizza_window():
             if event.type == pygame.USEREVENT and event.button == spice_button:
                 save_pizza()
 
-            if event.type == pygame.USEREVENT and event.button == pizza_button:
-                pass
-
-            for btn in [spice_button, pizza_button, back_button]:
+            for btn in [spice_button, back_button]:
                 btn.handle_event(event)
 
 
@@ -318,7 +305,7 @@ def pizza_window():
 
 
 
-        for btn in [spice_button, pizza_button, back_button]:
+        for btn in [spice_button, back_button]:
             btn.check_hover(pygame.mouse.get_pos())
             btn.draw(screen)
         
@@ -334,5 +321,6 @@ def pizza_window():
         #screen.blit(cursor, (x-2, y-2))
 
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 
 

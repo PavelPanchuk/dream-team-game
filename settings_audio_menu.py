@@ -27,7 +27,7 @@ def resize_background(filename, width, height):
 
 WIDTH, HEIGHT = read_size()
 
-MAX_FPS = 60
+MAX_FPS = 10
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("audio settings")
@@ -62,7 +62,7 @@ def fade():
             running = False
 
         pygame.display.flip()
-        clock.tick(MAX_FPS)  # Ограничение FPS
+        clock.tick(30)  # Ограничение FPS
 
 def settings_audio_menu():
     print("audio settings")
@@ -128,5 +128,6 @@ def settings_audio_menu():
         screen.blit(cursor, (x-2, y-2))
 
         pygame.display.flip()
+        clock.tick(MAX_FPS)
 #меню готовка кухня короче
 

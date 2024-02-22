@@ -8,24 +8,30 @@ import json
 # Инициализация pygame
 pygame.init()
 
-file = open("settings.json", "r")
 
-# читаем содержимое файла и преобразуем его в словарь
-data = json.loads(file.read())
+def read_size():
+    file = open("settings.json", "r")
+    data = json.loads(file.read())
 
-# получаем значение по ключу 'WIDTH' и присваиваем его переменной x
-WIDTH = data["WIDTH"]
-HEIGHT = data["HEIGHT"]
-MAX_FPS = data["HEIGHT"]
-# закрываем файл
-file.close()
-# выводим значение переменной x
+    # Параметры экрана
 
+    width = data["WIDTH"]
+    height = data["HEIGHT"]
+    file.close()
+    return width, height
+
+WIDTH, HEIGHT = read_size()
+
+def resize_background(filename, width, height):
+    background = pygame.image.load(filename)
+    background = pygame.transform.scale(background, (width, height))
+    return background
+
+MAX_FPS = 10
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("spice")
-main_background = pygame.image.load("background1.jpg")
-game_background = pygame.image.load("background2.jpg")
+main_background = resize_background("background1.jpg", WIDTH, HEIGHT)
 
 clock = pygame.time.Clock()
 
@@ -34,6 +40,7 @@ cursor = pygame.image.load("cursor.png")
 pygame.mouse.set_visible(True)  # Скрываем стандартный курсор
 # затемнение
 def fade():
+    WIDTH, HEIGHT = read_size()
     running = True
     fade_alpha = 0  # Уровень прозрачности для анимации
 
@@ -55,20 +62,21 @@ def fade():
             running = False
 
         pygame.display.flip()
-        clock.tick(MAX_FPS)  # Ограничение FPS
+        clock.tick(30)  # Ограничение FPS
 
 
 # функция где подсказка о рецептах
 
 
 def spice_window():
+    WIDTH, HEIGHT = read_size()
     print("spice window")
     # Создание кнопок
     # spice_button = ImageButton(WIDTH/2-(252/2), 150, 252, 74, "Рецепты", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
     # pizza_button = ImageButton(WIDTH/2-(252/2), 250, 252, 74, "пицца", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
     back_button = ImageButton(
         WIDTH / 2 - (252 / 2),
-        350,
+        HEIGHT / 2 ,
         252,
         74,
         "назад",
@@ -80,7 +88,8 @@ def spice_window():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        screen.blit(main_background, (0, 0))
+        background = resize_background("background1.jpg", WIDTH, HEIGHT)
+        screen.blit(background, (0, 0))
 
         font = pygame.font.Font(None, 25)
         text_surface = font.render(
@@ -131,3 +140,4 @@ def spice_window():
         screen.blit(cursor, (x - 2, y - 2))
 
         pygame.display.flip()
+        clock.tick(MAX_FPS)
