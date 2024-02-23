@@ -33,7 +33,7 @@ MAX_FPS = 10
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu test")
-main_background = resize_background("background1.jpg", WIDTH, HEIGHT)
+main_background = resize_background("doska.jpg", WIDTH, HEIGHT)
 
 clock = pygame.time.Clock()
 WHITE = (0, 0, 255)
@@ -80,12 +80,23 @@ def pizza_window():
     # Создание кнопок
     spice_button = ImageButton(WIDTH-200, 100, 150, 74, "приготовить", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
     back_button = ImageButton(100, 100, 150, 74, "к заказу", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    """
+    chese_button = ImageButton(WIDTH-200, 200, 100, 100, "", "src/art/ingredients/cheese.png", "src/art/ingredients/cheese.png", "click.mp3")
+    ham_button = ImageButton(WIDTH-200, 300, 100, 100, "", "src/art/ingredients/ham.png", "src/art/ingredients/ham.png", "click.mp3")
+    mushroom_button = ImageButton(WIDTH-200, 400, 100, 100, "", "src/art/ingredients/mushroom.png", "src/art/ingredients/mushroom.png", "click.mp3")
+    onion_button = ImageButton(WIDTH-200, 500, 100, 100, "", "src/art/ingredients/onion.png", "src/art/ingredients/onion.png", "click.mp3")
+
+    pineapple_button = ImageButton(100, 200, 100, 100, "", "src/art/ingredients/pineapple.png", "src/art/ingredients/pineapple.png", "click.mp3")
+    sausage_button = ImageButton(100, 300, 100, 100, "", "src/art/ingredients/sausage.png", "src/art/ingredients/sausage.png", "click.mp3")
+    tomato_button = ImageButton(100, 400, 100, 100, "", "src/art/ingredients/tomato.png", "src/art/ingredients/tomato.png", "click.mp3")
+    testo_button = ImageButton(100, 500, 100, 100, "", "src/art/ingredients/testo.png", "src/art/ingredients/testo.png", "click.mp3")
+    """
 
 
 
     # создаем кнопку "тесто"
     dough_button = pygame.sprite.Sprite()
-    dough_button.image = pygame.image.load("dough.png")
+    dough_button.image = pygame.image.load("testo.png")
     dough_button.rect = dough_button.image.get_rect()
     dough_button.rect.x =10000
     dough_button.rect.y = 10000
@@ -113,15 +124,15 @@ def pizza_window():
 
 
     # создаем поверхность для рисования пиццы
-    pizza_surface = pygame.Surface((500, 300))
+    pizza_surface = pygame.Surface((WIDTH/2, HEIGHT/2))
     pizza_surface.fill((0, 0, 0)) # белый цвет
     pizza_surface.set_alpha(128) # полупрозрачность
     pizza_rect = pizza_surface.get_rect()
-    pizza_rect.center = (500, 300) # центр экрана
+    pizza_rect.center = (WIDTH/2, HEIGHT/2) # центр экрана
 
     # загружаем изображения теста и сыра
-    dough_image = pygame.image.load("dough.png")
-    dough_image = pygame.transform.scale(dough_image, (300, 300)) # подгоняем под размер поверхности
+    dough_image = pygame.image.load("testo.png")
+    dough_image = pygame.transform.scale(dough_image, (WIDTH/2, HEIGHT/2)) # подгоняем под размер поверхности
 
     cheese_image = pygame.image.load("cheese.png")
     cheese_image = pygame.transform.scale(cheese_image, (50, 50)) # подгоняем под размер кусочка сыра
@@ -134,7 +145,7 @@ def pizza_window():
     # создаем функцию для рисования теста
     def draw_dough():
         # накладываем изображение теста на поверхность пиццы
-        pizza_surface.blit(dough_image, (mouse_x-300, mouse_y-150))
+        pizza_surface.blit(dough_image, (mouse_x-WIDTH/2, mouse_y-HEIGHT/2))
         # обновляем экран
 
         file_path = "dough.txt"
@@ -162,7 +173,7 @@ def pizza_window():
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # вычисляем смещение относительно центра поверхности пиццы
         # накладываем изображение сыра на поверхность пиццы с учетом смещения
-        pizza_surface.blit(cheese_image, (mouse_x-300, mouse_y-150))
+        pizza_surface.blit(cheese_image, (mouse_x-WIDTH/4, mouse_y-HEIGHT/4))
         # обновляем экран
 
         file_path = "cheese.txt"
@@ -188,7 +199,7 @@ def pizza_window():
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # вычисляем смещение относительно центра поверхности пиццы
         # накладываем изображение сыра на поверхность пиццы с учетом смещения
-        pizza_surface.blit(tomat_image, (mouse_x-300, mouse_y-150))
+        pizza_surface.blit(tomat_image, (mouse_x-WIDTH/4, mouse_y-HEIGHT/4))
         # обновляем экран
         
 
@@ -227,23 +238,10 @@ def pizza_window():
         # выводим сообщение об успешном сохранении
         print(f"Изображение пиццы сохранено в файл {file_name}")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     running = True
     while running:
         screen.fill((0, 0, 0))
-        background = resize_background("background1.jpg", WIDTH, HEIGHT)
+        background = resize_background("doska.jpg", WIDTH, HEIGHT)
         screen.blit(background, (0, 0))
 
         font = pygame.font.Font(None, 72)
@@ -269,6 +267,8 @@ def pizza_window():
             if event.type == pygame.USEREVENT and event.button == spice_button:
                 save_pizza()
 
+
+            #for btn in [spice_button, back_button, chese_button, ham_button, mushroom_button, onion_button,pineapple_button, sausage_button, tomato_button, testo_button]:
             for btn in [spice_button, back_button]:
                 btn.handle_event(event)
 
@@ -303,8 +303,8 @@ def pizza_window():
         screen.blit(pizza_surface, pizza_rect)
         # обновляем экран
 
-
-
+        #for btn in [spice_button, back_button, chese_button, ham_button, mushroom_button, onion_button,
+        #            pineapple_button, sausage_button, tomato_button, testo_button]:
         for btn in [spice_button, back_button]:
             btn.check_hover(pygame.mouse.get_pos())
             btn.draw(screen)
