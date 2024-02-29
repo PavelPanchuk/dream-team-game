@@ -489,7 +489,7 @@ def new_game():
                 print(need_dough)
 
 
-                if str(random_cheese)<=str(need_cheese) and str(random_tomat)<=str(need_tomat) and str(random_dough)<=str(need_dough):
+                if (random_cheese)<=(need_cheese) and (random_tomat)<=(need_tomat) and (random_dough)<=(need_dough):
                     print(f"1 k 1 можно отдать заказ")
 
                     file_path = "money.txt"
