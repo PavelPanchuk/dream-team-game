@@ -17,6 +17,8 @@ from menus import menus
 from settings_video_menu import settings_video_menu
 from settings_audio_menu import settings_audio_menu
 from generate_mission import generate_mission
+from fade import fade
+from storystart import storystart
 
 
 # Инициализация pygame
@@ -452,7 +454,7 @@ def new_game():
             # вызывается файл с функцией меню
             if event.type == pygame.USEREVENT and event.button == menus_button:
                 fade()
-                menus()
+                storystart()
             # хрень при нажатие на которую можно отдать заказ, сравнивает миссию и что получилось
             if event.type == pygame.USEREVENT and event.button == put_button:
                 # задаем путь к папке
@@ -481,12 +483,12 @@ def new_game():
                 need_dough = int(file.read())
                 file.close()
 
-                print(random_cheese)
-                print(need_cheese)               
-                print(random_tomat)               
-                print(need_tomat)                
-                print(random_dough)
-                print(need_dough)
+                print("random_cheese"+str(random_cheese))
+                print("need"+str(need_cheese) )              
+                print("random_tomat"+str(random_tomat)    )           
+                print("need"+str(need_tomat)  )              
+                print("random_dough"+str(random_dough))
+                print("need"+str(need_dough))
 
 
                 if (random_cheese)<=(need_cheese) and (random_tomat)<=(need_tomat) and (random_dough)<=(need_dough):
@@ -593,32 +595,6 @@ def new_game():
         pygame.display.flip()
         clock.tick(MAX_FPS)
 
-
-# затемнение при переходе между экранами, для красоты
-def fade():
-    running = True
-    fade_alpha = 0  # Уровень прозрачности для анимации
-    WIDTH, HEIGHT = read_size()
-    #screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-
-        # Анимация затухания текущего экрана
-        fade_surface = pygame.Surface((WIDTH, HEIGHT))
-        fade_surface.fill((0, 0, 0))
-        fade_surface.set_alpha(fade_alpha)
-        screen.blit(fade_surface, (0, 0))
-
-        # Увеличение уровня прозрачности
-        fade_alpha += 5
-        if fade_alpha >= 105:
-            fade_alpha = 255
-            running = False
-
-        pygame.display.flip()
-        clock.tick(30)  # Ограничение FPS
 
 
 # бесконечный цикл?
