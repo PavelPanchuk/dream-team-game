@@ -5,6 +5,7 @@ import pygame_menu
 import json
 import os
 import datetime
+import platform
 
 
 # Инициализация pygame
@@ -23,17 +24,17 @@ def read_size():
 
 WIDTH, HEIGHT = read_size()
 
-def resize_background(filename, width, height):
-    background = pygame.image.load(filename)
-    background = pygame.transform.scale(background, (width, height))
-    return background
+def resize_img(filename, width, height):
+    img = pygame.image.load(filename)
+    img = pygame.transform.scale(img, (width, height))
+    return img
 
 MAX_FPS = 10
 
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Menu test")
-main_background = resize_background("doska.jpg", WIDTH, HEIGHT)
+main_background = resize_img("doska.jpg", WIDTH, HEIGHT)
 
 clock = pygame.time.Clock()
 WHITE = (0, 0, 255)
@@ -46,8 +47,15 @@ sc.fill(WHITE)
 
 pygame.display.update()
 pygame.mouse.set_visible(False)  # Скрываем стандартный курсор
+
+if (platform.system() == 'Linux'):
+    file_path = "./src/art/ingredients/"
+else:
+    file_path = "\\src\\art\\ingredients\\"
+
 # затемнение
 def fade():
+    WIDTH, HEIGHT = read_size()
     running = True
     fade_alpha = 0  # Уровень прозрачности для анимации
 
@@ -78,151 +86,89 @@ def pizza_window():
     running = False
     print("pizza cookie def")
     # Создание кнопок
-    spice_button = ImageButton(WIDTH-200, 100, 150, 74, "приготовить", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    back_button = ImageButton(100, 100, 150, 74, "к заказу", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
-    """
-    chese_button = ImageButton(WIDTH-200, 200, 100, 100, "", "src/art/ingredients/cheese.png", "src/art/ingredients/cheese.png", "click.mp3")
-    ham_button = ImageButton(WIDTH-200, 300, 100, 100, "", "src/art/ingredients/ham.png", "src/art/ingredients/ham.png", "click.mp3")
-    mushroom_button = ImageButton(WIDTH-200, 400, 100, 100, "", "src/art/ingredients/mushroom.png", "src/art/ingredients/mushroom.png", "click.mp3")
-    onion_button = ImageButton(WIDTH-200, 500, 100, 100, "", "src/art/ingredients/onion.png", "src/art/ingredients/onion.png", "click.mp3")
-
-    pineapple_button = ImageButton(100, 200, 100, 100, "", "src/art/ingredients/pineapple.png", "src/art/ingredients/pineapple.png", "click.mp3")
-    sausage_button = ImageButton(100, 300, 100, 100, "", "src/art/ingredients/sausage.png", "src/art/ingredients/sausage.png", "click.mp3")
-    tomato_button = ImageButton(100, 400, 100, 100, "", "src/art/ingredients/tomato.png", "src/art/ingredients/tomato.png", "click.mp3")
-    testo_button = ImageButton(100, 500, 100, 100, "", "src/art/ingredients/testo.png", "src/art/ingredients/testo.png", "click.mp3")
-    """
-
-
-
-    # создаем кнопку "тесто"
-    dough_button = pygame.sprite.Sprite()
-    dough_button.image = pygame.image.load("testo.png")
-    dough_button.rect = dough_button.image.get_rect()
-    dough_button.rect.x =10000
-    dough_button.rect.y = 10000
-
-    # создаем кнопку "сыр"
-    cheese_button = pygame.sprite.Sprite()
-    cheese_button.image = pygame.image.load("cheese.png")
-    cheese_button.rect = cheese_button.image.get_rect()
-    cheese_button.rect.x = 10000
-    cheese_button.rect.y = 10000
-
-
-    # создаем кнопку "tomat"
-    tomat_button = pygame.sprite.Sprite()
-    tomat_button.image = pygame.image.load("tomat.png")
-    tomat_button.rect = tomat_button.image.get_rect()
-    tomat_button.rect.x = 10000
-    tomat_button.rect.y = 10000
-
-    # создаем группу для кнопок
-    buttons = pygame.sprite.Group()
-    buttons.add(dough_button)
-    buttons.add(cheese_button)
-    buttons.add(tomat_button)
-
+    spice_button = ImageButton(WIDTH - WIDTH / 5, HEIGHT / 8, 150, 74, "приготовить", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
+    back_button = ImageButton(WIDTH / 13, HEIGHT / 8, 150, 74, "к заказу", "green_button2.jpg", "green_button2_hover.jpg", "click.mp3")
 
     # создаем поверхность для рисования пиццы
-    pizza_surface = pygame.Surface((WIDTH/2, HEIGHT/2))
+    pizza_surface = pygame.Surface(( HEIGHT/2, HEIGHT/2))
     pizza_surface.fill((0, 0, 0)) # белый цвет
-    pizza_surface.set_alpha(128) # полупрозрачность
+    pizza_surface.set_alpha(200) # полупрозрачность
     pizza_rect = pizza_surface.get_rect()
     pizza_rect.center = (WIDTH/2, HEIGHT/2) # центр экрана
 
+
+    file_path = "./src/art/ingredients/"
+
+
     # загружаем изображения теста и сыра
-    dough_image = pygame.image.load("testo.png")
-    dough_image = pygame.transform.scale(dough_image, (WIDTH/2, HEIGHT/2)) # подгоняем под размер поверхности
-
-    cheese_image = pygame.image.load("cheese.png")
-    cheese_image = pygame.transform.scale(cheese_image, (50, 50)) # подгоняем под размер кусочка сыра
+    dough_big_image = resize_img(f"{file_path}testo.png", (WIDTH/2) * 1.5, (HEIGHT/2) * 1.5)
+    dough_mid_image = resize_img(f"{file_path}testo.png", (WIDTH/2), (HEIGHT/2))
+    dough_small_image = resize_img(f"{file_path}testo.png", (WIDTH / 2) * 0.5, (HEIGHT / 2) * 0.5)
 
 
-    tomat_image = pygame.image.load("tomat.png")
-    tomat_image = pygame.transform.scale(tomat_image, (50, 50)) # подгоняем под размер кусочка сыра
+
+    # прописать пути для винды
+    # image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
+    # file_path = "\\dreamteam\\src\\txt\\" + random_text
+
+
+    cheese_image = resize_img(f"{file_path}cheese.png", 100, 100)
+    tomato_image = resize_img(f"{file_path}tomato.png", 100, 100)
+    ham_image = resize_img(f"{file_path}ham.png", 100, 100)
+    mushroom_image = resize_img(f"{file_path}mushroom.png", 100, 100)
+    onion_image = resize_img(f"{file_path}onion.png", 100, 100)
+    pineapple_image = resize_img(f"{file_path}pineapple.png", 100, 100)
+    sausage_image = resize_img(f"{file_path}sausage.png", 100, 100)
+
+
+    def ingredients(name):
+        if (name ==  "cheese"):
+            return cheese_image
+        elif (name ==  "tomat"):
+            return tomato_image
+        elif (name == "ham"):
+            return ham_image
+        elif (name == "mushroom"):
+            return mushroom_image
+        elif (name == "onion"):
+            return onion_image
+        elif (name == "pineapple"):
+            return pineapple_image
+        elif (name == "sausage"):
+            return sausage_image
+        elif (name == "dough"):
+
+            return dough_mid_image
 
 
     # создаем функцию для рисования теста
-    def draw_dough():
-        # накладываем изображение теста на поверхность пиццы
-        pizza_surface.blit(dough_image, (mouse_x-WIDTH/2, mouse_y-HEIGHT/2))
-        # обновляем экран
-
-        file_path = "dough.txt"
-        file = open(file_path, "r")
-        num = int(file.read())
-        file.close()
-        x=1
-        result = int(num) + int(x)
-        print(result)
-        print(num)
-
-        file_path = "dough.txt"
-        os.remove(file_path)
-
-        file = open(file_path, "w+")
-        file.write(str(result))
-        file.close()
-
-        pygame.display.flip()
-        clock.tick(MAX_FPS)
-
-    # создаем функцию для рисования сыра
-    def draw_cheese():
+    def draw_ingredients(ingredient = None):
         # получаем координаты курсора мыши
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # вычисляем смещение относительно центра поверхности пиццы
         # накладываем изображение сыра на поверхность пиццы с учетом смещения
-        pizza_surface.blit(cheese_image, (mouse_x-WIDTH/4, mouse_y-HEIGHT/4))
-        # обновляем экран
+        image = ingredients(ingredient)
+        pizza_surface.blit(image, (mouse_x-WIDTH/4 - image.get_rect().size[0] / 2, mouse_y-HEIGHT/4 - image.get_rect().size[1] / 2))
 
-        file_path = "cheese.txt"
+        # определяем файл
+        file_path = f"{ingredient}.txt"
         file = open(file_path, "r")
+        # считываем из файла
         num = int(file.read())
         file.close()
-        x=1
-        result = int(num) + int(x)
-        print(result)
-        print(num)
-
-        file_path = "cheese.txt"
+        result = int(num) + 1
+        print(f"Вы потратили {result} ед. {ingredient}")
+        # определяем файл
+        file_path = f"{ingredient}.txt"
         os.remove(file_path)
-
+        # запись в файл
         file = open(file_path, "w+")
+        # пишем в файл
         file.write(str(result))
         file.close()
-        pygame.display.flip()
-        clock.tick(MAX_FPS)
-
-    def draw_tomat():
-        # получаем координаты курсора мыши
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        # вычисляем смещение относительно центра поверхности пиццы
-        # накладываем изображение сыра на поверхность пиццы с учетом смещения
-        pizza_surface.blit(tomat_image, (mouse_x-WIDTH/4, mouse_y-HEIGHT/4))
         # обновляем экран
-        
-
-        file_path = "tomat.txt"
-        file = open(file_path, "r")
-        num = int(file.read())
-        file.close()
-        x=1
-        result = int(num) + int(x)
-        print(result)
-        print(num)
-
-        file_path = "tomat.txt"
-        os.remove(file_path)
-
-        file = open(file_path, "w+")
-        file.write(str(result))
-        file.close()
-
         pygame.display.flip()
         clock.tick(MAX_FPS)
-
-
 
 
     # создаем функцию для сохранения изображения пиццы
@@ -241,13 +187,33 @@ def pizza_window():
     running = True
     while running:
         screen.fill((0, 0, 0))
-        background = resize_background("doska.jpg", WIDTH, HEIGHT)
+        background = resize_img("doska.jpg", WIDTH, HEIGHT)
         screen.blit(background, (0, 0))
 
         font = pygame.font.Font(None, 72)
         text_surface = font.render("Кухня", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(WIDTH/2,100))
+        text_rect = text_surface.get_rect(center=(WIDTH/2, HEIGHT / 7))
         screen.blit(text_surface, text_rect)
+
+        name_img = ["cheese", "ham", "mushroom", "onion", "pineapple", "sausage", "tomato", "testo"]
+        x = WIDTH / 13
+        y = HEIGHT / 4
+        for i in name_img:
+
+            #if (platform.system() == 'Linux'):
+            image = pygame.image.load(f"{file_path}{i}.png")
+            file_txt_path = f"{file_path}{i}.txt"
+            #else:
+                #прописать пути для винды
+                #image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
+                #file_path = "\\dreamteam\\src\\txt\\" + random_text
+
+            image = pygame.transform.scale(image, (WIDTH / 9 , WIDTH / 9 ))
+            screen.blit(image, (x, y))
+            y += WIDTH / 8
+            if i == "onion":
+                x = WIDTH - WIDTH / 5
+                y = HEIGHT / 4
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -268,53 +234,44 @@ def pizza_window():
                 save_pizza()
 
 
-            #for btn in [spice_button, back_button, chese_button, ham_button, mushroom_button, onion_button,pineapple_button, sausage_button, tomato_button, testo_button]:
             for btn in [spice_button, back_button]:
                 btn.handle_event(event)
-
-
 
 
             #if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 # получаем координаты курсора мыши
                 #mouse_x, mouse_y = pygame.mouse.get_pos()
                 # если курсор находится над кнопкой "тесто"
-            if (event.type == pygame.MOUSEBUTTONDOWN and event.button ==2 ):
-                    # вызываем функцию для рисования теста
-                mouse_x, mouse_y = pygame.mouse.get_pos()
 
-                print("тесто")
-                draw_dough()
-                # если курсор находится над кнопкой "сыр"
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_d or(event.type == pygame.MOUSEBUTTONDOWN and event.button == 3 ):
-                    # вызываем функцию для рисования сыра
-                draw_cheese()
-            if (event.type == pygame.KEYDOWN and event.key == pygame.K_a) or(event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 ):
-                    # вызываем функцию для рисования сыра
-                draw_tomat()
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_1):
+                draw_ingredients("pineapple")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_2):
+                draw_ingredients("sausage")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_3):
+                draw_ingredients("tomat")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_5):
+                draw_ingredients("cheese")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_6):
+                draw_ingredients("ham")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_7):
+                draw_ingredients("mushroom")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_8):
+                draw_ingredients("onion")
+            if (event.type == pygame.KEYDOWN and event.key == pygame.K_9):
+                draw_ingredients("dough")
             # если пользователь нажал клавишу "S"
             if (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
                 # вызываем функцию для сохранения изображения пиццы
                 save_pizza()
-       
-        # рисуем кнопки на экране
-        buttons.draw(screen)
+
         # рисуем поверхность пиццы на экране
         screen.blit(pizza_surface, pizza_rect)
         # обновляем экран
 
-        #for btn in [spice_button, back_button, chese_button, ham_button, mushroom_button, onion_button,
-        #            pineapple_button, sausage_button, tomato_button, testo_button]:
         for btn in [spice_button, back_button]:
+        #for btn in [spice_button, back_button]:
             btn.check_hover(pygame.mouse.get_pos())
             btn.draw(screen)
-        
-
-
-
-
-
-
 
         # Отображение курсора в текущей позиции мыши
         #x, y = pygame.mouse.get_pos()

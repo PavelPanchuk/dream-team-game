@@ -7,7 +7,7 @@ import os
 def generate_mission():
     print("generate_mission")
     # определяем папку, где хранятся картинки
-    image_folder = "\\dreamteam\\src\\art\\guest"
+    image_folder = "./src/art/guest"
 
     # получаем список всех файлов в папке
     image_files = os.listdir(image_folder)
@@ -21,7 +21,7 @@ def generate_mission():
     random_dough = random.randint(1, 2)
 
     # определяем папку, где хранятся текстовые файлы с историей
-    text_folder = "\\dreamteam\\src\\txt"
+    text_folder = "./src/txt"
 
     # получаем список всех файлов в папке
     text_files = os.listdir(text_folder)
