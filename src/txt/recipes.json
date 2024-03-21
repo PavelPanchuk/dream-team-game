@@ -1,0 +1,47 @@
+{
+    "hawaiian": {
+        "tomato": 0,
+        "cheese": 3,
+        "ham": 0,
+        "mushroom": 0,
+        "onion": 0,
+        "pineapple": 4,
+        "sausage": 0
+    },
+    "julien": {
+        "tomato": 2,
+        "cheese": 0,
+        "ham": 2,
+        "mushroom": 4,
+        "onion": 3,
+        "pineapple": 0,
+        "sausage": 0
+    },
+    "margherita": {
+        "tomato": 5,
+        "cheese": 4,
+        "ham": 0,
+        "mushroom": 0,
+        "onion": 0,
+        "pineapple": 0,
+        "sausage": 0
+    },
+    "newyork": {
+        "tomato": 0,
+        "cheese": 4,
+        "ham": 6,
+        "mushroom": 0,
+        "onion": 0,
+        "pineapple": 0,
+        "sausage": 0
+    },
+    "peperoni": {
+        "tomato": 0,
+        "cheese": 6,
+        "ham": 0,
+        "mushroom": 0,
+        "onion": 0,
+        "pineapple": 0,
+        "sausage": 6
+    }
+}

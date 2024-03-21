@@ -54,7 +54,7 @@ def generate_mission():
 
 
     x=0
-    file = open("cheese.txt", "w+")
+    file = open("src/txt/cheese.txt", "w+")
     # записываем текст в файл
     file.write(str(x))
     # закрываем файл
@@ -62,13 +62,13 @@ def generate_mission():
 
 
     # в random_number хранится количество пицц, это техническая инфа
-    file = open("tomat.txt", "w+")
+    file = open("src/txt/tomat.txt", "w+")
     # записываем текст в файл
     file.write(str(x))
     # закрываем файл
     file.close()        # в random_number хранится количество пицц, это техническая инфа
 
-    file = open("dough.txt", "w+")
+    file = open("src/txt/dough.txt", "w+")
     # записываем текст в файл
     file.write(str(x))
     # закрываем файл

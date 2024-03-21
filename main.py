@@ -9,22 +9,27 @@ import os
 from pygame import mixer
 import shutil
 import platform
+import time
 
 
 # импортируем функции из файлов
-from button import ImageButton
-from menus import menus
-from settings_video_menu import settings_video_menu
-from settings_audio_menu import settings_audio_menu
-from generate_mission import generate_mission
-from fade import fade
-from storystart import storystart
+import page_0_main
+import page_1_settings
+import page_2_audio
+import page_3_video
+import page_4_levels
+import page_5_storystart
+import page_6_game
+import page_7_menus
+import page_8_recipes
+import page_9_pizza
+
 
 
 # Инициализация pygame
 pygame.init()
 
-# хрень в которой считываем из файла разрешение экрана
+# считываем из файла разрешение экрана
 
 def read_size():
     file = open("settings.json", "r")
@@ -47,19 +52,19 @@ def resize_background(filename, width, height):
 
 
 
-MAX_FPS = 10
+MAX_FPS = 30
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("котокафе")
-main_background = resize_background("background1.jpg", WIDTH, HEIGHT)
-game_background = resize_background("background2.jpg", WIDTH, HEIGHT)
-pygame.display.set_icon(pygame.image.load("icon.ico"))
+main_background = resize_background("src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+game_background = resize_background("src/art/backgrounds/background2.png", WIDTH, HEIGHT)
+#pygame.display.set_icon(pygame.image.load("icon.ico"))
 
 clock = pygame.time.Clock()
 
 
 # загружаем музыкальный файл
-pygame.mixer.music.load("soundtreck.mp3")
+pygame.mixer.music.load("src/music/soundtreck.mp3")
 # воспроизводим музыку постоянно по кругу
 pygame.mixer.music.play(1)
 # Загрузка и установка курсора можно поменять на свою картинку, но хз на какую
@@ -67,536 +72,234 @@ pygame.mixer.music.play(1)
 pygame.mouse.set_visible(True)  # Скрываем стандартный курсор
 
 
+PAGE = 0
+INIT_MAIN = False
+INIT_SETTINGS = False
+INIT_AUDIO = False
+INIT_VIDEO = False
+INIT_LEVELS = False
+INIT_STORY_START = False
+INIT_GAME = False
+INIT_MENUS = False
+INIT_RECIPES = False
+INIT_PIZZA = False
+
+
+if (platform.system() == 'Linux'):
+    file_path = "./src/art/ingredients/"
+else:
+    file_path = "\\src\\art\\ingredients\\"
+
+
 # главное меню и функция
 def main_menu():
-    WIDTH, HEIGHT = read_size()
-    # Создание кнопок
-    start_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 - 148,
-        252,
-        74,
-        "Играть",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-    settings_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 - 48,
-        252,
-        74,
-        "Настройки",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-    exit_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 + 52,
-        252,
-        74,
-        "Выйти",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
+    global PAGE, INIT_MAIN, INIT_SETTINGS, INIT_AUDIO, INIT_VIDEO, INIT_LEVELS,\
+        INIT_STORY_START, INIT_GAME, INIT_MENUS, INIT_RECIPES,INIT_PIZZA, pizza_surface, pizza_rect
 
     running = True
+    WIDTH, HEIGHT = read_size()
+    #buttons = page_0_main.init_main(WIDTH, HEIGHT)
     while running:
         screen.fill((0, 0, 0))
-        background = resize_background("background1.jpg", WIDTH, HEIGHT)
+        WIDTH, HEIGHT = read_size()
+        # """ Главное меню """
+        if PAGE == 0 and INIT_MAIN == False:
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            buttons = page_0_main.init_main(WIDTH, HEIGHT)
+            INIT_MAIN = True
+
+        # """ Окно настройки
+        elif PAGE == 1 and INIT_SETTINGS == False:
+            INIT_MAIN = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_1_settings.init_settings(WIDTH, HEIGHT)
+            INIT_SETTINGS = True
+
+        # """ Окно настройки аудио """
+        elif PAGE == 2 and INIT_AUDIO == False:
+            INIT_SETTINGS = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_2_audio.init_audio(WIDTH, HEIGHT)
+            INIT_AUDIO = True
+
+        # """ Окно настройки видео """
+        elif PAGE == 3 and INIT_VIDEO == False:
+            INIT_SETTINGS = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_3_video.init_video(WIDTH, HEIGHT)
+            INIT_VIDEO = True
+
+        # """ Окно выбора уровня """
+        elif PAGE == 4 and INIT_LEVELS == False:
+            INIT_MAIN = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_4_levels.init_levels(WIDTH, HEIGHT)
+            INIT_LEVELS = True
+
+        # """ Окно история игры  """
+        elif PAGE == 5 and INIT_STORY_START == False:
+            INIT_LEVELS = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_5_storystart.init_storystart(WIDTH, HEIGHT)
+            INIT_STORY_START = True
+
+        # """ Главное окно игры """
+        elif PAGE == 6 and INIT_GAME == False:
+            INIT_LEVELS = False
+            background = resize_background("./src/art/backgrounds/background2.png", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_6_game.init_game(WIDTH, HEIGHT)
+            INIT_GAME = True
+
+        # """ Окно меню """
+        elif PAGE == 7 and INIT_MENUS == False:
+            INIT_GAME = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_7_menus.init_menus(WIDTH, HEIGHT)
+            INIT_MENUS = True
+
+        # """ Окно с рецептами """
+        elif PAGE == 8 and INIT_RECIPES == False:
+            INIT_MENUS = False
+            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_8_recipes.init_recipes(WIDTH, HEIGHT)
+            page_8_recipes.recipes_img(WIDTH)
+            INIT_RECIPES = True
+
+        # """ Окно приготовления пиццы """
+        elif PAGE == 9 and INIT_PIZZA == False:
+            INIT_MENUS = False
+            background = resize_background("src/art/backgrounds/doska.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_9_pizza.init_pizza(WIDTH, HEIGHT)
+            pizza_surface = pygame.Surface((HEIGHT / 2, HEIGHT / 2))
+            pizza_surface.fill((0, 0, 0))  # белый цвет
+            pizza_surface.set_alpha(200)  # полупрозрачность
+            pizza_rect = pizza_surface.get_rect()
+            pizza_rect.center = (WIDTH / 2, HEIGHT / 2)  # центр экрана
+            page_9_pizza.pizza_img(WIDTH,HEIGHT)
+            INIT_PIZZA = True
+
         screen.blit(background, (0, 0))
 
-        font = pygame.font.Font(None, 72)
-        text_surface = font.render("MENU TEST", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
-        screen.blit(text_surface, text_rect)
+
+        if PAGE == 5 :
+            page_5_storystart.story(screen, WIDTH, HEIGHT)
+        elif PAGE == 6:
+            page_6_game.game(screen, WIDTH, HEIGHT)
+        elif PAGE == 8:
+            page_8_recipes.recipes(screen, WIDTH, HEIGHT)
+        elif PAGE == 9:
+
+            page_9_pizza.pizza(screen,WIDTH,HEIGHT)
+
 
         # обработчик конопчек
         for event in pygame.event.get():
             # выход
             if event.type == pygame.QUIT:
-                running = False
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.USEREVENT and event.button == start_button:
-                print("Кнопка 'Старт' была нажата!")
-                fade()
-                new_game()
+            if PAGE == 0:
+                PAGE = page_0_main.main_handler(event, buttons)
 
-            if event.type == pygame.USEREVENT and event.button == settings_button:
-                print("Кнопка 'Настройки' была нажата!")
-                fade()
-                running = False
-                settings_menu()
-            # тоже выход
+            elif PAGE == 1:
+                PAGE = page_1_settings.settings_handler(event, buttons)
+                if PAGE == 0:
+                    buttons = []
+                    INIT_SETTINGS = False
+                    break
 
-            if event.type == pygame.USEREVENT and event.button == exit_button:
-                running = False
-                pygame.quit()
-                sys.exit()
+            elif PAGE == 2:
+                PAGE = page_2_audio.audio_handler(screen, event, buttons)
+                if PAGE == 1:
+                    buttons = []
+                    INIT_AUDIO = False
+                    break
+
+            elif PAGE == 3:
+                PAGE = page_3_video.video_handler(screen, event, buttons)
+                if PAGE == 1:
+                    buttons = []
+                    INIT_VIDEO = False
+                    break
+
+            elif PAGE == 4:
+                PAGE = page_4_levels.levels_handler(event, buttons)
+                if PAGE == 1:
+                    buttons = []
+                    INIT_LEVELS = False
+                    break
+                if PAGE == 5:
+                    buttons = []
+                    INIT_LEVELS = False
+                    break
+
+            elif PAGE == 5:
+                PAGE = page_5_storystart.story_handler(event, buttons)
+                if PAGE == 4:
+                    buttons = []
+                    INIT_STORY_START = False
+                    break
+
+            elif PAGE == 6:
+                PAGE = page_6_game.game_handler(event,screen, buttons,WIDTH,HEIGHT)
+                if PAGE == 4:
+                    buttons = []
+                    INIT_GAME = False
+                    break
+
+            elif PAGE == 7:
+                PAGE = page_7_menus.menus_handler(event, buttons)
+                print(PAGE)
+                if PAGE == 6:
+                    buttons = []
+                    INIT_MENUS = False
+                    break
+
+            elif PAGE == 8:
+                PAGE = page_8_recipes.recipes_handler(event, buttons)
+                if PAGE == 7:
+                    buttons = []
+                    INIT_RECIPES = False
+                    break
+            elif PAGE == 9:
+                PAGE = page_9_pizza.pizza_handler(event, buttons)
+                if PAGE == 6 or PAGE == 7:
+                    buttons = []
+                    INIT_PIZZA = False
+                    break
+            else:
+                pass
+
             # рисуют и опрашивают кнопчки
-            for btn in [start_button, settings_button, exit_button]:
-                btn.handle_event(event)
-        for btn in [start_button, settings_button, exit_button]:
-            btn.check_hover(pygame.mouse.get_pos())
-            btn.draw(screen)
-
-        # Отображение курсора в текущей позиции мыши
-        x, y = pygame.mouse.get_pos()
-        # screen.blit(cursor, (x-2, y-2))
-
-        pygame.display.flip()
-        clock.tick(MAX_FPS)
-
-
-# функция настроек
-def settings_menu():
-    WIDTH, HEIGHT = read_size()
-    # Создание кнопок
-    audio_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 - 148,
-        252,
-        74,
-        "Аудио",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-    video_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 - 48,
-        252,
-        74,
-        "Видео",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-    back_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 + 52,
-        252,
-        74,
-        "Назад",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-
-    running = True
-    while running:
-        screen.fill((0, 0, 0))
-        background = resize_background("background1.jpg", WIDTH, HEIGHT)
-        screen.blit(background, (0, 0))
-
-        font = pygame.font.Font(None, 72)
-        text_surface = font.render("SETTINS", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
-        screen.blit(text_surface, text_rect)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                # Возврат в меню
-                if event.key == pygame.K_ESCAPE:
-                    fade()
-                    running = False
-                    main_menu()
-
-            if event.type == pygame.USEREVENT and event.button == video_button:
-                print("Кнопка 'Настройки видео' была нажата!")
-                fade()
-                running = False
-                settings_video_menu()
-                settings_menu()
-
-            if event.type == pygame.USEREVENT and event.button == audio_button:
-                print("Кнопка 'Настройки аудио' была нажата!")
-                fade()
-                running = False
-                settings_audio_menu()
-                settings_menu()
-
-            if event.type == pygame.USEREVENT and event.button == back_button:
-                fade()
-                running = False
-                main_menu()
-
-            for btn in [audio_button, video_button, back_button]:
+            for btn in buttons:
                 btn.handle_event(event)
 
-        for btn in [audio_button, video_button, back_button]:
-            btn.check_hover(pygame.mouse.get_pos())
-            btn.draw(screen)
+            if PAGE == 9 and INIT_PIZZA == True:
+                page_9_pizza.pizza_draw(pizza_surface,event)
 
-        # Отображение курсора в текущей позиции мыши
-        x, y = pygame.mouse.get_pos()
-        # screen.blit(cursor, (x-2, y-2))
+        if PAGE == 9 and INIT_PIZZA == True:
+            # рисуем поверхность пиццы на экране
+            screen.blit(pizza_surface, pizza_rect)
 
-        pygame.display.flip()
-        clock.tick(MAX_FPS)
 
-
-# функция для запуска самой игры (геймплея)
-def new_game():
-    WIDTH, HEIGHT = read_size()
-    # Создание кнопок
-    back_button = ImageButton(
-        #WIDTH - 1000,
-        100,
-        #HEIGHT - 600,
-        100,
-        150,
-        74,
-        "меню",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-    menus_button = ImageButton(
-        WIDTH - 400,
-        HEIGHT - 100,
-        252,
-        74,
-        "на кухню",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-    put_button = ImageButton(
-        WIDTH - 400,
-        HEIGHT - 400,
-        252,
-        74,
-        "отдать заказ",
-        "green_button2.jpg",
-        "green_button2_hover.jpg",
-        "click.mp3",
-    )
-
-    running = True
-    while running:
-
-        screen.fill((0, 0, 0))
-        background = resize_background("background2.jpg", WIDTH, HEIGHT)
-        screen.blit(background, (0, 0))
-
-        file_path = "money.txt"
-        file = open(file_path, "r")
-        # читаем число из файла и преобразуем его в целое
-        num = int(file.read())
-        # закрываем файл
-        file.close()
-        # проверяем существование файла
-        file_path = "day.txt"
-
-                    # задаем другую переменную для сложения
-
-                    # открываем файл для чтения
-        file = open(file_path, "r")
-
-                    # читаем число из файла и преобразуем его в целое
-        day = int(file.read())
-
-        file.close()
-
-        font = pygame.font.Font(None, 72)
-        text_surface = font.render("$" + str(num) + " day " + str(day), True, (0, 255, 255), (255, 204, 153))
-        text_rect = text_surface.get_rect(center=(WIDTH / 10, HEIGHT / 20 + 100))
-        screen.blit(text_surface, text_rect)
-
-
-
-        # тут должно быть что то что генерировало случайного перса и текст с заданием
-        file_path = "mission.json"
-
-        # проверяем существование файла
-        if (os.path.exists(file_path) and os.path.isfile(file_path))==False:
-            
-            print("Файл не существует")
-            generate_mission()
-
-            file_path = "hours.txt"
-
-                    # задаем другую переменную для сложения
-            other_var = random.randint(1, 5)
-
-                    # открываем файл для чтения
-            file = open(file_path, "r")
-
-                    # читаем число из файла и преобразуем его в целое
-            num = int(file.read())
-
-                    # закрываем файл
-            file.close()
-
-                    # нынешняя сумма + доходы-расходы фактические (тут можно отдать больше товаров чем просят, и это не оплачивается)
-            result = int(num) + int(other_var) 
-            print(result)
-            print(num)
-            print(other_var)
-            if result>=24:
-                result=0
-                file_path1 = "day.txt"
-
-                        # задаем другую переменную для сложения
-                        # открываем файл для чтения
-                file1 = open(file_path1, "r")
-
-                        # читаем число из файла и преобразуем его в целое
-                daynow = int(file1.read())
-
-                        # закрываем файл
-                file1.close()
-
-                        # открываем файл для записи
-                file1 = open(file_path1, "w")
-                z=daynow+1
-                print("z")
-                print(z)
-                        # записываем результат в файл, преобразовав его в строку
-                file1.write(str(z))
-
-                        # закрываем файл
-                file1.close()
-
-
-
-                    # открываем файл для записи
-            file = open(file_path, "w")
-
-                    # записываем результат в файл, преобразовав его в строку
-            file.write(str(result))
-
-                    # закрываем файл
-            file.close()
-
-        #получение инфы о миссии
-        file = open("mission.json", "r")
-        # читаем содержимое файла и преобразуем его в словарь
-        data = json.loads(file.read())
-
-        # получаем значение по ключу 'WIDTH' и присваиваем его переменной x
-        random_image = data["image"]
-        random_cheese = data["random_cheese"]
-        random_cheese = str(random_cheese)
-        random_tomat = data["random_tomat"]
-        random_tomat = str(random_tomat)
-        random_dough = data["random_dough"]
-        random_dough = str(random_dough)
-        random_text = data["text"]
-        file.close()
-
-        # Загрузка изображения  выбранной вайфу
-        if (platform.system() == 'Linux'):
-            image =  pygame.image.load("./src/art/guest/" + random_image)
-            file_path = "./src/txt/" + random_text
-        else:
-            image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
-            file_path = "\\dreamteam\\src\\txt\\" + random_text
-        # number= pygame.text.load()
-
-        # открываем файл для чтения
-        file = open(file_path, "r", encoding="utf-8")
-
-        # читаем текст из файла и записываем его в переменную
-        text = file.read()
-
-        # закрываем файл
-        file.close()
-        # выводим текст на экран
-        # print(text)
-
-        font = pygame.font.Font(None, 30)
-        text_surface = font.render(
-            text +"сыра:"+random_cheese+"помидоров:"+random_tomat+"теста:"+random_dough,
-              True,
-                (0, 0, 0),
-                  (255, 204, 153)
-        )
-        text_rect = text_surface.get_rect(center=(WIDTH / 2, 100))
-        screen.blit(text_surface, text_rect)
-        # Координаты для размещения изображения
-        x = 100
-        y = 200
-        width, height = image.get_size()
-
-        # Уменьшение размера изображения в два раза
-        image = pygame.transform.scale(image, (width // 5, height // 2))
-        # Размещение изображения на экране
-        screen.blit(image, (x, y))
-
-        # Отображение курсора в текущей позиции мыши
-        x, y = pygame.mouse.get_pos()
-        # screen.blit(cursor, (x-2, y-2))
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                sys.exit()
-
-            if event.type == pygame.KEYDOWN:
-                # Возврат в меню
-                if event.key == pygame.K_ESCAPE:
-                    running = False
-
-            # Возврат в меню
-            if event.type == pygame.USEREVENT and event.button == back_button:
-                running = False
-            # вызывается файл с функцией меню
-            if event.type == pygame.USEREVENT and event.button == menus_button:
-                fade()
-                storystart()
-            # хрень при нажатие на которую можно отдать заказ, сравнивает миссию и что получилось
-            if event.type == pygame.USEREVENT and event.button == put_button:
-                # задаем путь к папке
-                #получение инфы о миссии
-                file = open("mission.json", "r")
-                data = json.loads(file.read())
-                random_cheese = data["random_cheese"]
-                random_cheese = int(random_cheese)
-                random_tomat = data["random_tomat"]
-                random_tomat = int(random_tomat)
-                random_dough = data["random_dough"]
-                random_dough = int(random_dough)
-                file.close()
-
-
-                file_path = "cheese.txt"
-                file = open(file_path, "r")
-                need_cheese = int(file.read())
-                file.close()
-                file_path = "tomat.txt"
-                file = open(file_path, "r")
-                need_tomat = int(file.read())
-                file.close()
-                file_path = "dough.txt"
-                file = open(file_path, "r")
-                need_dough = int(file.read())
-                file.close()
-
-                print("random_cheese"+str(random_cheese))
-                print("need"+str(need_cheese) )              
-                print("random_tomat"+str(random_tomat)    )           
-                print("need"+str(need_tomat)  )              
-                print("random_dough"+str(random_dough))
-                print("need"+str(need_dough))
-
-
-                if (random_cheese)<=(need_cheese) and (random_tomat)<=(need_tomat) and (random_dough)<=(need_dough):
-                    print(f"1 k 1 можно отдать заказ")
-
-                    file_path = "money.txt"
-
-                    # задаем другую переменную для сложения
-                    other_var = int(random_cheese) * 200
-
-                    # открываем файл для чтения
-                    file = open(file_path, "r")
-
-                    # читаем число из файла и преобразуем его в целое
-                    num = int(file.read())
-
-                    # закрываем файл
-                    file.close()
-
-                    # нынешняя сумма + доходы-расходы фактические (тут можно отдать больше товаров чем просят, и это не оплачивается)
-                    result = int(num) + int(other_var) - 150
-                    print(result)
-                    print(num)
-                    print(other_var)
-
-                    # открываем файл для записи
-                    file = open(file_path, "w")
-
-                    # записываем результат в файл, преобразовав его в строку
-                    file.write(str(result))
-
-                    # закрываем файл
-                    file.close()
-
-                    # задаем путь к файлу
-                    file_path = "mission.json"
-                    # удаляем файл
-                    os.remove(file_path)
-
-                    # задаем путь к директории
-                    if (platform.system() == 'Linux'):
-                        dir_path = "./src/mission/pizza/"
-                    else:
-                        dir_path = "\\dreamteam\\src\\mission\\pizza\\"
-
-                    # удаляем директорию и все ее содержимое
-                    shutil.rmtree(dir_path)
-                    # задаем путь к директории
-                    if (platform.system() == 'Linux'):
-                        dir_path = "./src/mission/pizza"
-                    else:
-                        dir_path = "\\dreamteam\\src\\mission\\pizza"
-
-
-                    # создаем директорию
-                    os.mkdir(dir_path)
-
-
-                    file_path = "tomat.txt"
-
-                    # удаляем файл
-                    os.remove(file_path)
-                    file_path = "cheese.txt"
-
-                    # удаляем файл
-                    os.remove(file_path)
-
-                    file_path = "dough.txt"
-                    # удаляем файл
-                    os.remove(file_path)
-
-
-                else:
-                    font = pygame.font.Font(None, 72)
-                    text_surface = font.render(
-                        "ТУТ НЕ ВЕСЬ ЗАКАЗ", True, (0, 0, 0), (255, 204, 153)
-                    )
-                    text_rect = text_surface.get_rect(
-                        center=(WIDTH / 10 + 100, HEIGHT / 20 + 300)
-                    )
-                    screen.blit(text_surface, text_rect)
-                    mixer.init()
-
-                    # загружаем файл с музыкой
-                    mixer.music.load("error.mp3")
-
-                    # воспроизводим музыку бесконечно с начала
-                    mixer.music.play(0, 0.0)
-                    pygame.mixer.music.load("soundtreck.mp3")
-
-                    # воспроизводим музыку постоянно по кругу
-                    pygame.mixer.music.play(1)
-
-                print(random_cheese)
-
-            # cюда вставлять кнопочки для отрисовочки очка
-            for btn in [back_button, menus_button, put_button]:
-                btn.handle_event(event)
-        # cюда вставлять кнопочки для отрисовочки очка
-        for btn in [back_button, menus_button, put_button]:
+        for btn in buttons:
             btn.check_hover(pygame.mouse.get_pos())
             btn.draw(screen)
 
         pygame.display.flip()
         clock.tick(MAX_FPS)
-
-
 
 # бесконечный цикл?
 if __name__ == "__main__":
     main_menu()
+
