@@ -23,6 +23,7 @@ import page_6_game
 import page_7_menus
 import page_8_recipes
 import page_9_pizza
+import page_10_store
 
 
 
@@ -56,9 +57,6 @@ MAX_FPS = 30
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("котокафе")
-main_background = resize_background("src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
-game_background = resize_background("src/art/backgrounds/background2.png", WIDTH, HEIGHT)
-#pygame.display.set_icon(pygame.image.load("icon.ico"))
 
 clock = pygame.time.Clock()
 
@@ -83,18 +81,26 @@ INIT_GAME = False
 INIT_MENUS = False
 INIT_RECIPES = False
 INIT_PIZZA = False
+INIT_STORE = False
 
 
 if (platform.system() == 'Linux'):
-    file_path = "./src/art/ingredients/"
+    file_path_ingredients = "./src/art/ingredients/"
+    file_path_background = "./src/art/backgrounds/"
+    file_path_buttons = "./src/art/buttons/"
+    file_path_music = "./src/music/"
 else:
-    file_path = "\\src\\art\\ingredients\\"
+    file_path_ingredients = "\\dreamteam\\src\\art\\ingredients\\"
+    file_path_background = "\\dreamteam\\src\\art\\backgrounds\\"
+    file_path_buttons = "\\dreamteam\\src\\art\\buttons\\"
+    file_path_music = "\\dreamteam\\src\\music\\"
+
 
 
 # главное меню и функция
 def main_menu():
     global PAGE, INIT_MAIN, INIT_SETTINGS, INIT_AUDIO, INIT_VIDEO, INIT_LEVELS,\
-        INIT_STORY_START, INIT_GAME, INIT_MENUS, INIT_RECIPES,INIT_PIZZA, pizza_surface, pizza_rect
+        INIT_STORY_START, INIT_GAME, INIT_MENUS, INIT_RECIPES, INIT_PIZZA, INIT_STORE, pizza_surface, pizza_rect
 
     running = True
     WIDTH, HEIGHT = read_size()
@@ -104,88 +110,96 @@ def main_menu():
         WIDTH, HEIGHT = read_size()
         # """ Главное меню """
         if PAGE == 0 and INIT_MAIN == False:
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
-            buttons = page_0_main.init_main(WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
+            buttons = page_0_main.init_main(WIDTH, HEIGHT,file_path_buttons,file_path_music)
             INIT_MAIN = True
 
         # """ Окно настройки
         elif PAGE == 1 and INIT_SETTINGS == False:
             INIT_MAIN = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_1_settings.init_settings(WIDTH, HEIGHT)
+            buttons = page_1_settings.init_settings(WIDTH, HEIGHT,file_path_buttons,file_path_music)
             INIT_SETTINGS = True
 
         # """ Окно настройки аудио """
         elif PAGE == 2 and INIT_AUDIO == False:
             INIT_SETTINGS = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_2_audio.init_audio(WIDTH, HEIGHT)
+            buttons = page_2_audio.init_audio(WIDTH, HEIGHT,file_path_buttons,file_path_music)
             INIT_AUDIO = True
 
         # """ Окно настройки видео """
         elif PAGE == 3 and INIT_VIDEO == False:
             INIT_SETTINGS = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_3_video.init_video(WIDTH, HEIGHT)
+            buttons = page_3_video.init_video(WIDTH, HEIGHT,file_path_buttons,file_path_music)
             INIT_VIDEO = True
 
         # """ Окно выбора уровня """
         elif PAGE == 4 and INIT_LEVELS == False:
             INIT_MAIN = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_4_levels.init_levels(WIDTH, HEIGHT)
+            buttons = page_4_levels.init_levels(WIDTH, HEIGHT,file_path_buttons,file_path_music)
             INIT_LEVELS = True
 
         # """ Окно история игры  """
         elif PAGE == 5 and INIT_STORY_START == False:
             INIT_LEVELS = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_5_storystart.init_storystart(WIDTH, HEIGHT)
+            buttons = page_5_storystart.init_storystart(WIDTH, HEIGHT,file_path_buttons,file_path_music)
             INIT_STORY_START = True
 
         # """ Главное окно игры """
         elif PAGE == 6 and INIT_GAME == False:
             INIT_LEVELS = False
-            background = resize_background("./src/art/backgrounds/background2.png", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background2.png", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_6_game.init_game(WIDTH, HEIGHT)
+            buttons = page_6_game.init_game(WIDTH, HEIGHT, file_path_buttons, file_path_music)
             INIT_GAME = True
 
         # """ Окно меню """
         elif PAGE == 7 and INIT_MENUS == False:
             INIT_GAME = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_7_menus.init_menus(WIDTH, HEIGHT)
+            buttons = page_7_menus.init_menus(WIDTH, HEIGHT, file_path_buttons, file_path_music)
             INIT_MENUS = True
 
         # """ Окно с рецептами """
         elif PAGE == 8 and INIT_RECIPES == False:
             INIT_MENUS = False
-            background = resize_background("./src/art/backgrounds/background1.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_8_recipes.init_recipes(WIDTH, HEIGHT)
+            buttons = page_8_recipes.init_recipes(WIDTH, HEIGHT, file_path_buttons,file_path_music)
             page_8_recipes.recipes_img(WIDTH)
             INIT_RECIPES = True
 
         # """ Окно приготовления пиццы """
         elif PAGE == 9 and INIT_PIZZA == False:
             INIT_MENUS = False
-            background = resize_background("src/art/backgrounds/doska.jpg", WIDTH, HEIGHT)
+            background = resize_background(f"{file_path_background}doska.jpg", WIDTH, HEIGHT)
             screen.blit(background, (0, 0))
-            buttons = page_9_pizza.init_pizza(WIDTH, HEIGHT)
+            buttons = page_9_pizza.init_pizza(WIDTH, HEIGHT, file_path_buttons,file_path_music)
             pizza_surface = pygame.Surface((HEIGHT / 2, HEIGHT / 2))
             pizza_surface.fill((0, 0, 0))  # белый цвет
             pizza_surface.set_alpha(200)  # полупрозрачность
             pizza_rect = pizza_surface.get_rect()
             pizza_rect.center = (WIDTH / 2, HEIGHT / 2)  # центр экрана
-            page_9_pizza.pizza_img(WIDTH,HEIGHT)
+            page_9_pizza.pizza_img(WIDTH,HEIGHT,file_path_ingredients)
             INIT_PIZZA = True
+
+        # """ Окно с магазином """
+        elif PAGE == 10 and INIT_STORE == False:
+            INIT_MENUS = False
+            background = resize_background(f"{file_path_background}background1.jpg", WIDTH, HEIGHT)
+            screen.blit(background, (0, 0))
+            buttons = page_10_store.init_store(WIDTH, HEIGHT, file_path_buttons, file_path_ingredients, file_path_music)
+            INIT_STORE = True
 
         screen.blit(background, (0, 0))
 
@@ -198,7 +212,7 @@ def main_menu():
             page_8_recipes.recipes(screen, WIDTH, HEIGHT)
         elif PAGE == 9:
 
-            page_9_pizza.pizza(screen,WIDTH,HEIGHT)
+            page_9_pizza.pizza(screen,WIDTH,HEIGHT,file_path_ingredients)
 
 
         # обработчик конопчек
@@ -271,12 +285,21 @@ def main_menu():
                     buttons = []
                     INIT_RECIPES = False
                     break
+
             elif PAGE == 9:
                 PAGE = page_9_pizza.pizza_handler(event, buttons)
                 if PAGE == 6 or PAGE == 7:
                     buttons = []
                     INIT_PIZZA = False
                     break
+
+            elif PAGE == 10:
+                PAGE = page_10_store.store_handler(event, buttons)
+                if PAGE == 7:
+                    buttons = []
+                    INIT_STORE = False
+                    break
+
             else:
                 pass
 

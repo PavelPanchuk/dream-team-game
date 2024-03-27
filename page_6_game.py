@@ -7,49 +7,54 @@ import os
 from pygame import mixer
 import shutil
 
-def init_game(WIDTH, HEIGHT):
+def init_game(WIDTH, HEIGHT, file_path_buttons, file_path_music):
     back_button = ImageButton(
         0.2 * WIDTH,
         50,
         150,
         74,
         "Меню",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     menus_button = ImageButton(
         0.55 * WIDTH,
         3 * HEIGHT / 4 - 40,
         85 * (WIDTH // 300),
         74,
-        "На кухню",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        "На кухню",f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     put_button = ImageButton(
         0.55 * WIDTH,
         3 * HEIGHT / 4 + 50,
         85 * (WIDTH // 300),
         74,
-        "Отдать заказ",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        "Отдать заказ",f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [back_button, menus_button, put_button]
 
 def game(screen,WIDTH,HEIGHT):
-    file_path = "src/txt/money.txt"
+    if (platform.system() == 'Linux'):
+        file_path = "src/txt/money.txt"
+    else:
+        file_path = "\\dreamteam\\src\\txt\\money.txt"
+
     file = open(file_path, "r")
     # читаем число из файла и преобразуем его в целое
     num = int(file.read())
     # закрываем файл
     file.close()
     # проверяем существование файла
-    file_path = "src/txt/day.txt"
 
+    if (platform.system() == 'Linux'):
+        file_path = "src/txt/day.txt"
+    else:
+        file_path = "\\dreamteam\\src\\txt\\day.txt"
     # задаем другую переменную для сложения
 
     # открываем файл для чтения
@@ -124,16 +129,26 @@ def game_handler(event,screen, buttons,WIDTH,HEIGHT):
         random_dough = int(random_dough)
         file.close()
 
-        file_path = "src/txt/cheese.txt"
-        file = open(file_path, "r")
+        if (platform.system() == 'Linux'):
+            file_path_cheese = "src/txt/cheese.txt"
+            file_path_tomat = "src/txt/tomat.txt"
+            file_path_dough = "src/txt/dough.txt"
+            file_path_money = "src/txt/money.txt"
+        else:
+            file_path_cheese = "\\dreamteam\\src\\txt\\cheese.txt"
+            file_path_tomat = "\\dreamteam\\src\\txt\\tomat.txt"
+            file_path_dough = "\\dreamteam\\src\\txt\\dough.txt"
+            file_path_money = "\\dreamteam\\src\\txt\\money.txt"
+
+        file = open(file_path_cheese, "r")
         need_cheese = int(file.read())
         file.close()
-        file_path = "src/txt/tomat.txt"
-        file = open(file_path, "r")
+
+        file = open(file_path_tomat, "r")
         need_tomat = int(file.read())
         file.close()
-        file_path = "src/txt/dough.txt"
-        file = open(file_path, "r")
+
+        file = open(file_path_dough, "r")
         need_dough = int(file.read())
         file.close()
 
@@ -147,13 +162,12 @@ def game_handler(event,screen, buttons,WIDTH,HEIGHT):
         if (random_cheese) <= (need_cheese) and (random_tomat) <= (need_tomat) and (random_dough) <= (need_dough):
             print(f"1 k 1 можно отдать заказ")
 
-            file_path = "src/txt/money.txt"
 
             # задаем другую переменную для сложения
             other_var = int(random_cheese) * 200
 
             # открываем файл для чтения
-            file = open(file_path, "r")
+            file = open(file_path_money, "r")
 
             # читаем число из файла и преобразуем его в целое
             num = int(file.read())
@@ -168,7 +182,7 @@ def game_handler(event,screen, buttons,WIDTH,HEIGHT):
             print(other_var)
 
             # открываем файл для записи
-            file = open(file_path, "w")
+            file = open(file_path_money, "w")
 
             # записываем результат в файл, преобразовав его в строку
             file.write(str(result))

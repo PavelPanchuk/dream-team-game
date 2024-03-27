@@ -4,7 +4,7 @@ from fade import fade
 import sys
 import main
 
-def init_levels(WIDTH, HEIGHT):
+def init_levels(WIDTH, HEIGHT, file_path_buttons, file_path_music):
     back_button = ImageButton(
         # WIDTH - 1000,
         WIDTH - 250,
@@ -12,10 +12,9 @@ def init_levels(WIDTH, HEIGHT):
         100,
         150,
         74,
-        "Назад",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        "Назад",f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_0_button = ImageButton(
@@ -24,9 +23,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "0",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_1_button = ImageButton(
@@ -35,9 +34,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "1",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_2_button = ImageButton(
@@ -46,9 +45,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "2",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_3_button = ImageButton(
@@ -57,9 +56,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "3",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_4_button = ImageButton(
@@ -68,9 +67,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "4",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_5_button = ImageButton(
@@ -79,9 +78,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "5",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_6_button = ImageButton(
@@ -90,9 +89,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "6",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
 
     level_7_button = ImageButton(
@@ -101,9 +100,9 @@ def init_levels(WIDTH, HEIGHT):
         180,
         180,
         "7",
-        "src/art/buttons/level1.png",
-        "src/art/buttons/level2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}level1.png",
+        f"{file_path_buttons}level2.png",
+        f"{file_path_music}click.mp3",
     )
     return [back_button, level_0_button, level_1_button,
             level_2_button, level_3_button, level_4_button,

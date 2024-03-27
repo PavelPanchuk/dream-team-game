@@ -3,16 +3,16 @@ import pygame
 from fade import fade
 import sys
 
-def init_video(WIDTH,HEIGHT):
+def init_video(WIDTH,HEIGHT, file_path_buttons, file_path_music):
     low_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
         HEIGHT / 2 - 105,
         400,
         74,
         "960x600",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3"
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     full_button = ImageButton(
@@ -20,17 +20,19 @@ def init_video(WIDTH,HEIGHT):
         HEIGHT / 2 - 30,
         400,
         74, "1280x640",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3"
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
+
     hd_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
-        HEIGHT / 2 + 45, 400,
+        HEIGHT / 2 + 45,
+        400,
         74, "1920x1080",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3"
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     back_button = ImageButton(
@@ -39,9 +41,9 @@ def init_video(WIDTH,HEIGHT):
         400,
         74,
         "Назад",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3"
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [low_button,full_button,hd_button, back_button]
 

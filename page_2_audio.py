@@ -3,7 +3,7 @@ import pygame
 from fade import fade
 import sys
 
-def init_audio(WIDTH,HEIGHT):
+def init_audio(WIDTH, HEIGHT, file_path_buttons, file_path_music):
     if pygame.mixer.music.get_busy():
         text_music = "Отключить музыку"
     else:
@@ -13,9 +13,9 @@ def init_audio(WIDTH,HEIGHT):
         WIDTH / 2 - (400 / 2) - 230,
         HEIGHT / 2 - 80, 400, 74,
         text_music,
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3"
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     back_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
@@ -23,8 +23,9 @@ def init_audio(WIDTH,HEIGHT):
         400,
         74,
         "Назад",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png", "src/music/click.mp3"
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [on_button, back_button]
 

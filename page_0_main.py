@@ -4,16 +4,16 @@ from fade import fade
 import sys
 
 
-def init_main(WIDTH, HEIGHT):
+def init_main(WIDTH, HEIGHT, file_path_buttons,file_path_music):
     start_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
         HEIGHT / 2 - 80,
         350,
         74,
         "Играть",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     settings_button = ImageButton(
@@ -22,9 +22,9 @@ def init_main(WIDTH, HEIGHT):
         350,
         74,
         "Настройки",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     exit_button = ImageButton(
@@ -33,9 +33,9 @@ def init_main(WIDTH, HEIGHT):
         350,
         74,
         "Выйти",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [start_button, settings_button, exit_button]
 

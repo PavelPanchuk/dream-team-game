@@ -7,41 +7,56 @@ import os
 from pygame import mixer
 import shutil
 
-def init_menus(WIDTH, HEIGHT):
+"магазин",
+
+
+def init_menus(WIDTH, HEIGHT, file_path_buttons, file_path_music):
     spice_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 - 148,
+        WIDTH / 2 - (400 / 2) - 230,
+        HEIGHT / 2 - 105,
         252,
         74,
         "Рецепты",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     pizza_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 - 48,
+        WIDTH / 2 - (400 / 2) - 230,
+        HEIGHT / 2 - 30,
         252,
         74,
         "к готовке пиццы",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
+    store_button = ImageButton(
+        WIDTH / 2 - (400 / 2) - 230,
+        HEIGHT / 2 + 45,
+        252,
+        74,
+        "магазин",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
+    )
+
     back_button = ImageButton(
-        WIDTH / 2 - (252 / 2),
-        HEIGHT / 2 + 52,
+        WIDTH / 2 - (400 / 2) - 230,
+        HEIGHT / 2 + 120,
         252,
         74,
         "к заказу",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
-    return [back_button, spice_button, pizza_button]
+
+    return [back_button, store_button, spice_button, pizza_button]
 
 def menus_handler(event, buttons):
-    back_button, spice_button, pizza_button = buttons
+    back_button, store_button, spice_button, pizza_button = buttons
 
     # Возврат в меню
 
@@ -63,7 +78,12 @@ def menus_handler(event, buttons):
         # переход на страницу "ГОТОВКА"
         page = 9
         return page
-        #pizza_window()
+
+    elif event.type == pygame.USEREVENT and event.button == store_button:
+        fade()
+        # переход на страницу "Магазин"
+        page = 10
+        return page
 
     else:
         return 7

@@ -4,16 +4,16 @@ from fade import fade
 import sys
 import main
 
-def init_settings(WIDTH, HEIGHT):
+def init_settings(WIDTH, HEIGHT, file_path_buttons, file_path_music):
     audio_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
         HEIGHT / 2 - 80,
         400,
         74,
         "Аудио",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     video_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
@@ -21,9 +21,9 @@ def init_settings(WIDTH, HEIGHT):
         400,
         74,
         "Видео",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     back_button = ImageButton(
         WIDTH / 2 - (400 / 2) - 230,
@@ -31,9 +31,9 @@ def init_settings(WIDTH, HEIGHT):
         400,
         74,
         "Назад",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [audio_button, video_button, back_button]
 

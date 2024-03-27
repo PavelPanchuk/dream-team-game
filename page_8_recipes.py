@@ -2,10 +2,7 @@ from button import ImageButton
 import pygame
 from fade import fade
 import platform
-import json
-import os
-from pygame import mixer
-import shutil
+
 
 def init_recipes(WIDTH, HEIGHT):
     back_button = ImageButton(
@@ -16,16 +13,19 @@ def init_recipes(WIDTH, HEIGHT):
         150,
         74,
         "назад",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [back_button]
 
 
 def recipes_img(WIDTH):
     global imge_recipes_hawaiian,imge_recipes_pepperoni,imge_recipes_newyork,imge_recipes_margherita
-    file_path = "./src/art/recipes/"
+    if (platform.system() == 'Linux'):
+        file_path = "./src/art/recipes/"
+    else:
+        file_path = "\\dreamteam\\src\\art\\recipes\\"
     imge_recipes_hawaiian = pygame.image.load(f"{file_path}recipes_hawaiian.jpg")
     imge_recipes_hawaiian = pygame.transform.scale(imge_recipes_hawaiian, (WIDTH / 4, WIDTH / 8))
     imge_recipes_pepperoni = pygame.image.load(f"{file_path}recipes_pepperoni.jpg")

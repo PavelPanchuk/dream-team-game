@@ -3,7 +3,7 @@ import pygame
 from fade import fade
 import platform
 
-def init_storystart(WIDTH, HEIGHT):
+def init_storystart(WIDTH, HEIGHT, file_path_buttons, file_path_music):
     back_button = ImageButton(
         # WIDTH - 1000,
         WIDTH - 250,
@@ -12,9 +12,9 @@ def init_storystart(WIDTH, HEIGHT):
         150,
         74,
         "Назад",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     continue_button = ImageButton(
@@ -23,9 +23,9 @@ def init_storystart(WIDTH, HEIGHT):
         252,
         74,
         "Окей, помогу!",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
 
     return [back_button, continue_button]
@@ -39,8 +39,8 @@ def story(screen,WIDTH,HEIGHT):
         image = pygame.image.load("./src/story/person/" + random_image)
         file_path = "./src/story/txt/" + random_text
     else:
-        file_path = (random_text)
-        image = pygame.image.load(random_image)
+        image = pygame.image.load("\\src\\story\\person\\" + random_image)
+        file_path = "\\dreamteam\\src\\story\\txt\\" + random_text
         # file_path =("\\dream-team-game-dev\\src\\story\\txt\\" + random_text)
         # image = pygame.image.load("\\dream-team-game-dev\\src\\story\\person\\" + random_image)
 

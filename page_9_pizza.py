@@ -3,6 +3,8 @@ import pygame
 from fade import fade
 import os
 import datetime
+import platform
+
 
 MAX_FPS = 10
 
@@ -11,7 +13,7 @@ def resize_img(filename, width, height):
     img = pygame.transform.scale(img, (width, height))
     return img
 
-def init_pizza(width, height):
+def init_pizza(width, height, file_path_buttons, file_path_music):
     global WIDTH, HEIGHT
     WIDTH, HEIGHT = width, height
     spice_button = ImageButton(
@@ -20,8 +22,10 @@ def init_pizza(width, height):
         150,
         74,
         "приготовить",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png", "src/music/click.mp3")
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
+    )
 
     back_button = ImageButton(
         WIDTH / 2 - (252 / 2),
@@ -29,39 +33,38 @@ def init_pizza(width, height):
         252,
         74,
         "к заказу",
-        "src/art/buttons/button1.png",
-        "src/art/buttons/button2.png",
-        "src/music/click.mp3",
+        f"{file_path_buttons}button1.png",
+        f"{file_path_buttons}button2.png",
+        f"{file_path_music}click.mp3",
     )
     return [back_button, spice_button]
 
 
 
-def pizza_img(WIDTH,HEIGHT):
+def pizza_img(WIDTH,HEIGHT,file_path_ingredients):
     global cheese_image, tomato_image, ham_image, mushroom_image, onion_image, pineapple_image, sausage_image,dough_mid_image
     # создаем поверхность для рисования пиццы
 
 
-    file_path = "./src/art/ingredients/"
 
     # загружаем изображения теста и сыра
-    dough_big_image = resize_img(f"{file_path}testo.png", (WIDTH / 2) * 1.5, (HEIGHT / 2) * 1.5)
+    dough_big_image = resize_img(f"{file_path_ingredients}testo.png", (WIDTH / 2) * 1.5, (HEIGHT / 2) * 1.5)
 
-    dough_mid_image = resize_img(f"{file_path}testo.png", (WIDTH / 2), (HEIGHT / 2))
+    dough_mid_image = resize_img(f"{file_path_ingredients}testo.png", (WIDTH / 2), (HEIGHT / 2))
 
-    dough_small_image = resize_img(f"{file_path}testo.png", (WIDTH / 2) * 0.5, (HEIGHT / 2) * 0.5)
+    dough_small_image = resize_img(f"{file_path_ingredients}testo.png", (WIDTH / 2) * 0.5, (HEIGHT / 2) * 0.5)
 
     # прописать пути для винды
     # image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
     # file_path = "\\dreamteam\\src\\txt\\" + random_text
 
-    cheese_image = resize_img(f"{file_path}cheese.png", 100, 100)
-    tomato_image = resize_img(f"{file_path}tomato.png", 100, 100)
-    ham_image = resize_img(f"{file_path}ham.png", 100, 100)
-    mushroom_image = resize_img(f"{file_path}mushroom.png", 100, 100)
-    onion_image = resize_img(f"{file_path}onion.png", 100, 100)
-    pineapple_image = resize_img(f"{file_path}pineapple.png", 100, 100)
-    sausage_image = resize_img(f"{file_path}sausage.png", 100, 100)
+    cheese_image = resize_img(f"{file_path_ingredients}cheese.png", 100, 100)
+    tomato_image = resize_img(f"{file_path_ingredients}tomato.png", 100, 100)
+    ham_image = resize_img(f"{file_path_ingredients}ham.png", 100, 100)
+    mushroom_image = resize_img(f"{file_path_ingredients}mushroom.png", 100, 100)
+    onion_image = resize_img(f"{file_path_ingredients}onion.png", 100, 100)
+    pineapple_image = resize_img(f"{file_path_ingredients}pineapple.png", 100, 100)
+    sausage_image = resize_img(f"{file_path_ingredients}sausage.png", 100, 100)
 
 
 def ingredients(name):
@@ -93,7 +96,12 @@ def draw_ingredients(pizza_surface,ingredient = None):
     pizza_surface.blit(image, (mouse_x-WIDTH/4 - image.get_rect().size[0] / 2, mouse_y-HEIGHT/4 - image.get_rect().size[1] / 2))
 
     # определяем файл
-    file_path = f"{ingredient}.txt"
+    if (platform.system() == 'Linux'):
+        file_path = f"./src/txt/{ingredient}.txt"
+    else:
+        file_path = f"\\dreamteam\\src\\txt\\{ingredient}.txt"
+
+
     file = open(file_path, "r")
     # считываем из файла
     num = int(file.read())
@@ -101,7 +109,6 @@ def draw_ingredients(pizza_surface,ingredient = None):
     result = int(num) + 1
     print(f"Вы потратили {result} ед. {ingredient}")
     # определяем файл
-    file_path = f"{ingredient}.txt"
     os.remove(file_path)
     # запись в файл
     file = open(file_path, "w+")
@@ -127,8 +134,7 @@ def draw_ingredients(pizza_surface,ingredient = None):
 
 
 
-def pizza(screen,WIDTH,HEIGHT):
-    file_path = "./src/art/ingredients/"
+def pizza(screen,WIDTH,HEIGHT,file_path_ingredients):
 
     name_img = ["cheese", "ham", "mushroom", "onion", "pineapple", "sausage", "tomato", "testo"]
     x = WIDTH / 13
@@ -136,8 +142,8 @@ def pizza(screen,WIDTH,HEIGHT):
     for i in name_img:
 
         # if (platform.system() == 'Linux'):
-        image = pygame.image.load(f"{file_path}{i}.png")
-        file_txt_path = f"{file_path}{i}.txt"
+        image = pygame.image.load(f"{file_path_ingredients}{i}.png")
+        file_txt_path = f"{file_path_ingredients}{i}.txt"
         # else:
         # прописать пути для винды
         # image = pygame.image.load("\\dreamteam\\src\\art\\guest\\" + random_image)
